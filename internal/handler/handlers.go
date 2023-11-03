@@ -4,6 +4,7 @@ import (
 	"diploma/internal/database"
 	"diploma/internal/model"
 	"diploma/internal/pkg"
+	"diploma/internal/session"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -49,7 +50,6 @@ func RegistrationhHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// TODO : generate JWT Tokens, check auth on every handler which requires it, logout from system
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
@@ -71,6 +71,14 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, http.StatusUnauthorized)
 			return
 		}
+		token, err := session.CreateToken()
+		if err != nil {
+			log.Print(err)
+			log.Println("\nADSAD")
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Token", token)
 		login := fmt.Sprintf("logged in as %s", user.Login)
 		code, err := w.Write([]byte(login))
 		if err != nil {
@@ -79,4 +87,9 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+// realize the logic of logout
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("pass"))
 }
