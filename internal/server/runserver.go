@@ -1,17 +1,20 @@
 package server
 
 import (
-	"diploma/internal/handler"
-	"diploma/internal/session"
+	"diploma/config"
+	"log"
 	"net/http"
 )
 
-func MakeRoutes() *http.ServeMux {
-	mux := http.NewServeMux()
+func Runserver(config config.Config, mux http.Handler) error {
+	server := &http.Server{
+		Addr:    config.Host + config.Port,
+		Handler: mux,
+	}
 
-	mux.HandleFunc("/register", handler.RegistrationhHandler)
-	mux.HandleFunc("/login", handler.LoginHandler)
-	mux.Handle("/logout", session.CheckAuth(handler.LogoutHandler))
+	log.Printf("server is listening on http://%s%s", config.Host, config.Port)
 
-	return mux
+	err := server.ListenAndServe()
+
+	return err
 }
