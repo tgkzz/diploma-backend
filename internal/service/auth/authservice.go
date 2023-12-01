@@ -13,6 +13,7 @@ type AutherService interface {
 	CreateUser(user user.User) error
 	CheckUserCreds(creds user.User) error
 	CreateToken(login string) (string, error)
+	ValidateToken(token string) bool
 }
 
 func NewAuthService(repo auth.AutherRepo) *AuthService {

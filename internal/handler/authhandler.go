@@ -29,6 +29,11 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) singup(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
+		if r.Header.Get("Content-Type") != "application/json" {
+			ErrorHandler(w, http.StatusUnsupportedMediaType)
+			return
+		}
+
 		var user user.User
 		if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 			log.Print(err)
@@ -59,6 +64,11 @@ func (h *Handler) singup(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
+		if r.Header.Get("Content-Type") != "application/json" {
+			ErrorHandler(w, http.StatusUnsupportedMediaType)
+			return
+		}
+
 		var creds user.User
 
 		if err := json.NewDecoder(r.Body).Decode(&creds); err != nil {
@@ -86,7 +96,8 @@ func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.Header().Add("Token", token)
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Authorization", token)
 		login := fmt.Sprintf("logged in as %s", creds.Login)
 		code, err := w.Write([]byte(login))
 		if err != nil {
@@ -94,5 +105,29 @@ func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 			ErrorHandler(w, code)
 			return
 		}
+
+		response := map[string]string{"Authorization": token}
+		json.NewEncoder(w).Encode(response)
+
+	default:
+		ErrorHandler(w, http.StatusMethodNotAllowed)
+		return
 	}
+}
+
+func (h *Handler) signout(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "POST":
+		token := r.Header.Get("Authorization")
+		if token == "" {
+			ErrorHandler(w, http.StatusUnauthorized)
+			return
+		}
+
+		w.Write([]byte("logged out"))
+	default:
+		ErrorHandler(w, http.StatusMethodNotAllowed)
+		return
+	}
+
 }

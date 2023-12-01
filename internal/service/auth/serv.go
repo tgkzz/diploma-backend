@@ -41,3 +41,8 @@ func (s *AuthService) CreateToken(login string) (string, error) {
 
 	return token, nil
 }
+
+func (s *AuthService) ValidateToken(token string) bool {
+	err := pkg.VerifyToken(token)
+	return err == nil
+}
