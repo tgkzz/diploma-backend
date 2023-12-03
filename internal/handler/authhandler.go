@@ -46,7 +46,7 @@ func (h *Handler) singup(w http.ResponseWriter, r *http.Request) {
 				log.Print(err)
 				ErrorHandler(w, http.StatusBadRequest)
 				return
-			} else if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			} else if strings.Contains(err.Error(), "UNIQUE constraint failed") || strings.Contains(err.Error(), "pq: повторяющееся значение ключа нарушает ограничение уникальности") {
 				log.Print(err)
 				ErrorHandler(w, http.StatusConflict)
 				return
@@ -97,17 +97,21 @@ func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Authorization", token)
-		login := fmt.Sprintf("logged in as %s", creds.Login)
-		code, err := w.Write([]byte(login))
-		if err != nil {
-			log.Print(err)
-			ErrorHandler(w, code)
-			return
-		}
+		// w.Header().Set("Authorization", token)
+		// login := fmt.Sprintf("logged in as %s", creds.Login)
+		// code, err := w.Write([]byte(login))
+		// if err != nil {
+		// 	log.Print(err)
+		// 	ErrorHandler(w, code)
+		// 	return
+		// }
 
 		response := map[string]string{"Authorization": token}
-		json.NewEncoder(w).Encode(response)
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
 
 	default:
 		ErrorHandler(w, http.StatusMethodNotAllowed)

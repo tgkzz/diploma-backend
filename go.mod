@@ -8,4 +8,8 @@ require (
 	golang.org/x/crypto v0.16.0
 )
 
-require github.com/golang-jwt/jwt v3.2.2+incompatible
+require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/stripe/stripe-go v70.15.0+incompatible
+	github.com/stripe/stripe-go/v76 v76.7.0
+)

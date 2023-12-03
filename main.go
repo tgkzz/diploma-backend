@@ -7,7 +7,13 @@ import (
 	"diploma/internal/server"
 	"diploma/internal/service"
 	"log"
+
+	"github.com/stripe/stripe-go/v76"
 )
+
+func init() {
+	stripe.Key = "sk_test_51OIkWIB9lxIKH7ncWvajdnxOB0mKvKPl5suXYP8SKwSgSWoXiL1nmY22zAA7UpkyTv6Vd86NF8oAsqvd5pjBg0sW00UdfNOT5t"
+}
 
 func main() {
 	config, err := config.OpenConfig()
