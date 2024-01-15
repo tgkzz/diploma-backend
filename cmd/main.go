@@ -32,8 +32,8 @@ func main() {
 	//service
 	service := service.NewService(repo)
 
-	//handler
-	handler := handler.NewHandler(service)
+	//controller
+	controller := handler.NewHandler(service)
 
-	log.Fatal(server.Runserver(config, handler.Routes()))
+	log.Fatal(server.Runserver(config, controller.Routes()))
 }

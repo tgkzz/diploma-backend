@@ -10,10 +10,10 @@ func (h *Handler) Routes() http.Handler {
 	// mux.HandleFunc("/swagger/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:4000/docs/swagger.json")))
 
 	//auth
-	mux.HandleFunc("/", h.home)
-	mux.HandleFunc("/signup", h.singup)
-	mux.HandleFunc("/signin", h.signin)
-	mux.HandleFunc("/signout", h.AuthMiddleware(h.signout))
+	mux.HandleFunc("/api", h.home)
+	mux.HandleFunc("/api/register", h.register)
+	mux.HandleFunc("/api/login", h.login)
+	mux.HandleFunc("/api/logout", h.AuthMiddleware(h.logout))
 
 	// require many improvements
 	// payment (test version)

@@ -26,7 +26,7 @@ func (h *Handler) home(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) singup(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) register(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		if r.Header.Get("Content-Type") != "application/json" {
@@ -57,11 +57,17 @@ func (h *Handler) singup(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		fmt.Fprintf(w, "success")
+		w.Header().Set("Content-Type", "application/json")
+
+		if err := json.NewEncoder(w).Encode("success"); err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
-func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		if r.Header.Get("Content-Type") != "application/json" {
@@ -97,14 +103,6 @@ func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		// w.Header().Set("Authorization", token)
-		// login := fmt.Sprintf("logged in as %s", creds.Login)
-		// code, err := w.Write([]byte(login))
-		// if err != nil {
-		// 	log.Print(err)
-		// 	ErrorHandler(w, code)
-		// 	return
-		// }
 
 		response := map[string]string{"Authorization": token}
 		if err := json.NewEncoder(w).Encode(response); err != nil {
@@ -119,7 +117,7 @@ func (h *Handler) signin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) signout(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) logout(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		token := r.Header.Get("Authorization")
@@ -128,7 +126,13 @@ func (h *Handler) signout(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.Write([]byte("logged out"))
+		w.Header().Set("Content-Type", "application/json")
+
+		if err := json.NewEncoder(w).Encode("logged out"); err != nil {
+			log.Print(err)
+			ErrorHandler(w, http.StatusInternalServerError)
+			return
+		}
 	default:
 		ErrorHandler(w, http.StatusMethodNotAllowed)
 		return
