@@ -17,7 +17,7 @@ func (h *Handler) Routes() http.Handler {
 
 	// require many improvements
 	// payment (test version)
-	mux.HandleFunc("/checkout", h.CORSCheck(h.checkout))
+	// mux.HandleFunc("/checkout", h.CORSCheck(h.checkout))
 
 	return h.Handles(mux)
 }
