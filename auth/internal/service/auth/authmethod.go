@@ -46,6 +46,7 @@ func (a AuthService) JwtAuthorization(user models.User) (string, error) {
 		Email:    user.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(2 * time.Hour)),
+			ID:        randStringBytesMaskImpr(40),
 		},
 	}
 
