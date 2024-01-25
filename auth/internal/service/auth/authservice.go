@@ -11,8 +11,8 @@ type AuthService struct {
 
 type IAuthService interface {
 	CreateNewUser(user models.User) error
-	GetUserByUsername(username string) (models.User, error)
-	DeleteUserByUsername(username string) error
+	GetUserByEmail(email string) (models.User, error)
+	DeleteUserByEmail(email string) error
 	CheckUserCreds(creds models.User) (models.User, error)
 	JwtAuthorization(user models.User) (string, error)
 	//Login(user models.User) (string, error)

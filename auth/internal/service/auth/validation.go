@@ -3,6 +3,7 @@ package auth
 import (
 	"auth/internal/models"
 	"regexp"
+	"strings"
 )
 
 func validateUserData(user models.User) error {
@@ -10,11 +11,19 @@ func validateUserData(user models.User) error {
 		return models.ErrInvalidEmail
 	}
 
+	if !isNameValid(user.FirstName, user.LastName) {
+		return models.ErrInvalidName
+	}
+
 	if !isPasswordStrong(user.Password) {
 		return models.ErrInvalidPassword
 	}
 
 	return nil
+}
+
+func isNameValid(firstName, lastName string) bool {
+	return len(strings.TrimSpace(firstName)) != 0 && len(strings.TrimSpace(lastName)) != 0
 }
 
 func isEmailValid(email string) bool {

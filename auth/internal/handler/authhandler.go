@@ -17,11 +17,8 @@ func (h *Handler) register(c echo.Context) error {
 
 	if err := h.service.Auth.CreateNewUser(user); err != nil {
 		h.errorLogger.Print(err)
-		if err == models.ErrInvalidEmail || err == models.ErrInvalidPassword {
+		if err == models.ErrInvalidEmail || err == models.ErrInvalidPassword || err == models.ErrInvalidName {
 			return ErrorHandler(c, err, http.StatusBadRequest)
-		}
-		if strings.Contains(err.Error(), "pq: повторяющееся значение ключа нарушает ограничение уникальности \"users_username_key\"") {
-			return ErrorHandler(c, models.ErrUsernameAlreadyTaken, http.StatusBadRequest)
 		}
 		if strings.Contains(err.Error(), "pq: повторяющееся значение ключа нарушает ограничение уникальности \"users_email_key\"") {
 			return ErrorHandler(c, models.ErrEmailAlreadyTaken, http.StatusBadRequest)
@@ -47,8 +44,9 @@ func (h *Handler) login(c echo.Context) error {
 	// TODO: handle errors
 	user, err := h.service.Auth.CheckUserCreds(creds)
 	if err != nil {
-		if err == models.ErrIncorrectUsernameOrEmail || strings.Contains(err.Error(), "sql: no rows in result set") {
-			return ErrorHandler(c, models.ErrIncorrectUsernameOrEmail, http.StatusBadRequest)
+		h.errorLogger.Print(err)
+		if err == models.ErrIncorrectEmailOrPassword || strings.Contains(err.Error(), "sql: no rows in result set") {
+			return ErrorHandler(c, models.ErrIncorrectEmailOrPassword, http.StatusBadRequest)
 		}
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}

@@ -5,7 +5,7 @@ import "errors"
 var (
 	ErrInvalidEmail             error = errors.New("invalid email")
 	ErrInvalidPassword          error = errors.New("invalid password")
-	ErrUsernameAlreadyTaken     error = errors.New("username is already taken")
 	ErrEmailAlreadyTaken        error = errors.New("email is already taken")
-	ErrIncorrectUsernameOrEmail error = errors.New("incorrect username or email")
+	ErrIncorrectEmailOrPassword error = errors.New("incorrect email or password")
+	ErrInvalidName              error = errors.New("firstname and lastname cannot be empty")
 )

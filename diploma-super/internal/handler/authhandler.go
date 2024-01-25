@@ -26,10 +26,8 @@ func (h *Handler) register(c *gin.Context) {
 
 	if result["status"] == "fail" {
 		switch result["message"] {
-		case auth.ErrInvalidEmail.Error(), auth.ErrInvalidPassword.Error():
+		case auth.ErrInvalidEmail.Error(), auth.ErrInvalidPassword.Error(), auth.ErrInvalidName.Error(), auth.ErrIncorrectEmailOrPassword.Error():
 			c.JSON(http.StatusBadRequest, gin.H{"message": result["message"]})
-		case auth.ErrUsernameAlreadyTaken.Error():
-			c.JSON(http.StatusConflict, gin.H{"message": result["message"]})
 		case auth.ErrEmailAlreadyTaken.Error():
 			c.JSON(http.StatusConflict, gin.H{"message": result["message"]})
 		default:
@@ -60,7 +58,7 @@ func (h *Handler) login(c *gin.Context) {
 
 	if result["status"] == "fail" {
 		switch result["message"] {
-		case auth.ErrIncorrectUsernameOrEmail.Error():
+		case auth.ErrIncorrectEmailOrPassword.Error():
 			c.JSON(http.StatusBadRequest, gin.H{"message": result["message"]})
 		default:
 			c.JSON(http.StatusInternalServerError, gin.H{"message": result["message"]})
@@ -71,5 +69,5 @@ func (h *Handler) login(c *gin.Context) {
 	token := fmt.Sprintf("Bearer %s", result["token"])
 
 	h.infoLogger.Print("successfully logged in")
-	c.JSON(http.StatusOK, gin.H{"status": "success", "message": fmt.Sprintf("Welcome %s", user.Username), "Authorization": token})
+	c.JSON(http.StatusOK, gin.H{"status": "success", "Authorization": token})
 }

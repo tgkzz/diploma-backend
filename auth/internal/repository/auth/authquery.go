@@ -6,9 +6,15 @@ import (
 
 // CREATE
 func (a AuthRepo) CreateUser(user models.User) error {
-	query := "INSERT INTO users (username, password, email) VALUES ($1, $2, $3)"
+	query := "INSERT INTO users (email, password, fname, lname) VALUES ($1, $2, $3, $4)"
 
-	if _, err := a.DB.Exec(query, user.Username, user.Password, user.Email); err != nil {
+	if _, err := a.DB.Exec(
+		query,
+		user.Email,
+		user.Password,
+		user.FirstName,
+		user.LastName,
+	); err != nil {
 		return err
 	}
 
@@ -16,12 +22,12 @@ func (a AuthRepo) CreateUser(user models.User) error {
 }
 
 // READ
-func (a AuthRepo) GetUserByUsername(username string) (models.User, error) {
-	query := "SELECT username, password, email from users WHERE username = $1"
+func (a AuthRepo) GetUserByEmail(email string) (models.User, error) {
+	query := "SELECT email, password, fname, lname from users WHERE email = $1"
 
 	var user models.User
 
-	err := a.DB.QueryRow(query, username).Scan(&user.Username, &user.Password, &user.Email)
+	err := a.DB.QueryRow(query, email).Scan(&user.Email, &user.Password, &user.FirstName, &user.LastName)
 
 	return user, err
 }
@@ -29,10 +35,10 @@ func (a AuthRepo) GetUserByUsername(username string) (models.User, error) {
 //UPDATE
 
 // DELETE
-func (a AuthRepo) DeleteUserByUsername(username string) error {
-	query := "DELETE FROM users WHERE username = $1"
+func (a AuthRepo) DeleteUserByEmail(email string) error {
+	query := "DELETE FROM users WHERE email = $1"
 
-	if _, err := a.DB.Exec(query, username); err != nil {
+	if _, err := a.DB.Exec(query, email); err != nil {
 		return err
 	}
 

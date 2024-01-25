@@ -31,3 +31,23 @@ INFO: 2024/01/24 10:21:21 server.go:19: server is listening on http://localhost:
 INFO: 2024/01/24 10:21:29 authhandler.go:36: Successfully created new user
 INFO: 2024/01/24 10:36:58 server.go:19: server is listening on http://localhost:8181
 INFO: 2024/01/24 10:37:17 server.go:19: server is listening on http://localhost:8181
+INFO: 2024/01/24 12:07:13 server.go:19: server is listening on http://localhost:8181
+INFO: 2024/01/24 15:24:43 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/01/24 15:25:15 authhandler.go:19: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
+INFO: 2024/01/24 15:25:32 authhandler.go:36: Successfully created new user
+INFO: 2024/01/25 06:48:11 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/01/25 06:49:13 authhandler.go:19: pq: INSERT содержит больше целевых столбцов, чем выражений
+INFO: 2024/01/25 06:50:03 server.go:19: server is listening on http://localhost:8181
+INFO: 2024/01/25 06:50:06 authhandler.go:33: Successfully created new user
+ERROR: 2024/01/25 06:51:21 authhandler.go:19: firstname and lastname cannot be empty
+ERROR: 2024/01/25 06:51:33 authhandler.go:47: sql: Scan error on column index 3, name "lname": destination not a pointer
+INFO: 2024/01/25 06:51:57 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/01/25 06:53:44 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/01/25 06:53:57 authhandler.go:19: invalid password
+ERROR: 2024/01/25 06:54:15 authhandler.go:19: firstname and lastname cannot be empty
+ERROR: 2024/01/25 06:54:19 authhandler.go:19: firstname and lastname cannot be empty
+INFO: 2024/01/25 06:58:52 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/01/25 07:00:05 authhandler.go:19: firstname and lastname cannot be empty
+ERROR: 2024/01/25 07:00:13 authhandler.go:19: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
+INFO: 2024/01/25 07:00:18 authhandler.go:33: Successfully created new user
+ERROR: 2024/01/25 07:03:35 authhandler.go:19: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"

@@ -19,22 +19,22 @@ func (a AuthService) CreateNewUser(user models.User) (err error) {
 	return a.repo.CreateUser(user)
 }
 
-func (a AuthService) GetUserByUsername(username string) (models.User, error) {
-	return a.repo.GetUserByUsername(username)
+func (a AuthService) GetUserByEmail(email string) (models.User, error) {
+	return a.repo.GetUserByEmail(email)
 }
 
-func (a AuthService) DeleteUserByUsername(username string) error {
-	return a.repo.DeleteUserByUsername(username)
+func (a AuthService) DeleteUserByEmail(email string) error {
+	return a.repo.DeleteUserByEmail(email)
 }
 
 func (a AuthService) CheckUserCreds(creds models.User) (models.User, error) {
-	user, err := a.repo.GetUserByUsername(creds.Username)
+	user, err := a.repo.GetUserByEmail(creds.Email)
 	if err != nil {
 		return models.User{}, err
 	}
 
 	if !checkPasswordHash(creds.Password, user.Password) {
-		return models.User{}, models.ErrIncorrectUsernameOrEmail
+		return models.User{}, models.ErrIncorrectEmailOrPassword
 	}
 
 	return user, nil
@@ -42,8 +42,9 @@ func (a AuthService) CheckUserCreds(creds models.User) (models.User, error) {
 
 func (a AuthService) JwtAuthorization(user models.User) (string, error) {
 	claims := &models.JwtCustomClaims{
-		Username: user.Username,
-		Email:    user.Email,
+		Email:     user.Email,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(2 * time.Hour)),
 			ID:        randStringBytesMaskImpr(40),

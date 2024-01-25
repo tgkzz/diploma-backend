@@ -11,8 +11,8 @@ type AuthRepo struct {
 
 type IAuthRepo interface {
 	CreateUser(user models.User) error
-	GetUserByUsername(username string) (models.User, error)
-	DeleteUserByUsername(username string) error
+	GetUserByEmail(email string) (models.User, error)
+	DeleteUserByEmail(email string) error
 }
 
 func NewAuthRepo(db *sql.DB) *AuthRepo {
