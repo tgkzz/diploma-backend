@@ -1,4 +1,4 @@
-package auth
+package pkg
 
 import (
 	"golang.org/x/crypto/bcrypt"
@@ -12,17 +12,17 @@ const (
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
-func hashPassword(psw string) (string, error) {
+func HashPassword(psw string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(psw), bcrypt.DefaultCost)
 	return string(bytes), err
 }
 
-func checkPasswordHash(password, hash string) bool {
+func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
 
-func randStringBytesMaskImpr(n int) string {
+func RandStringBytesMaskImpr(n int) string {
 	b := make([]byte, n)
 	for i, cache, remain := n-1, rand.Int63(), letterIdxMax; i >= 0; {
 		if remain == 0 {

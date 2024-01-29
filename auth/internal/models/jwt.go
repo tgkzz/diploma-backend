@@ -8,3 +8,8 @@ type JwtCustomClaims struct {
 	Email     string `json:"email"`
 	jwt.RegisteredClaims
 }
+
+type JwtAdminClaims struct {
+	Username string `json:"username"`
+	jwt.RegisteredClaims
+}

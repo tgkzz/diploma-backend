@@ -2,6 +2,7 @@ package auth
 
 import (
 	"auth/internal/models"
+	"auth/internal/pkg"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
@@ -11,7 +12,7 @@ func (a AuthService) CreateNewUser(user models.User) (err error) {
 		return err
 	}
 
-	user.Password, err = hashPassword(user.Password)
+	user.Password, err = pkg.HashPassword(user.Password)
 	if err != nil {
 		return err
 	}
@@ -33,7 +34,7 @@ func (a AuthService) CheckUserCreds(creds models.User) (models.User, error) {
 		return models.User{}, err
 	}
 
-	if !checkPasswordHash(creds.Password, user.Password) {
+	if !pkg.CheckPasswordHash(creds.Password, user.Password) {
 		return models.User{}, models.ErrIncorrectEmailOrPassword
 	}
 
@@ -47,7 +48,7 @@ func (a AuthService) JwtAuthorization(user models.User) (string, error) {
 		LastName:  user.LastName,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(2 * time.Hour)),
-			ID:        randStringBytesMaskImpr(40),
+			ID:        pkg.RandStringBytesMaskImpr(40),
 		},
 	}
 
