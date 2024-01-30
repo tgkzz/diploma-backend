@@ -23,7 +23,7 @@ func (h *Handler) registerExpert(c echo.Context) error {
 		"status":  "success",
 		"message": "Successfully created new expert",
 	}
-	h.infoLogger.Print("Successfully created new admin")
+	h.infoLogger.Print("Successfully created new expert")
 	return c.JSON(http.StatusCreated, successResponse)
 }
 
