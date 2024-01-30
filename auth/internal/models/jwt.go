@@ -13,3 +13,10 @@ type JwtAdminClaims struct {
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
+
+type JwtExpertClaims struct {
+	FirstName string `json:"fname"`
+	LastName  string `json:"lname"`
+	Email     string `json:"email"`
+	jwt.RegisteredClaims
+}
