@@ -6,6 +6,10 @@ import (
 )
 
 func ValidateAdminData(admin models.Admin) error {
+	if !pkg.IsValid(admin) {
+		return models.ErrEmptyness
+	}
+
 	if pkg.IsPasswordStrong(admin.Password) {
 		return models.ErrInvalidPassword
 	}

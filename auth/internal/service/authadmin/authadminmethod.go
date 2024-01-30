@@ -66,7 +66,7 @@ func (a AuthAdminService) JwtAdminAuthorization(admin models.Admin) (string, err
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, err := token.SignedString([]byte("super-puper-secret-key"))
+	t, err := token.SignedString([]byte(a.secretKey))
 	if err != nil {
 		return "", err
 	}

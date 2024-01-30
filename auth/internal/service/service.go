@@ -13,10 +13,10 @@ type Service struct {
 	ExpertAuth authexpert.IExpertService
 }
 
-func NewService(repo repository.Repository) *Service {
+func NewService(repo repository.Repository, secret string) *Service {
 	return &Service{
-		Auth:       auth.NewAuthService(repo),
-		AdminAuth:  authadmin.NewAuthService(repo),
-		ExpertAuth: authexpert.NewExpertService(repo),
+		Auth:       auth.NewAuthService(repo, secret),
+		AdminAuth:  authadmin.NewAuthService(repo, secret),
+		ExpertAuth: authexpert.NewExpertService(repo, secret),
 	}
 }

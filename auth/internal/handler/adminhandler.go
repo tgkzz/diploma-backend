@@ -16,6 +16,9 @@ func (h *Handler) registerAdmin(c echo.Context) error {
 
 	if err := h.service.AdminAuth.CreateNewAdmin(admin); err != nil {
 		h.errorLogger.Print(err)
+		if errors.Is(err, models.ErrEmptyness) || errors.Is(err, models.ErrInvalidPassword) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}
 

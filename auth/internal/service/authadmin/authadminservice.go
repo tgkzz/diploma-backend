@@ -6,7 +6,8 @@ import (
 )
 
 type AuthAdminService struct {
-	repo authadmin.IAdminRepo
+	repo      authadmin.IAdminRepo
+	secretKey string
 }
 
 type IAuthAdminService interface {
@@ -17,6 +18,6 @@ type IAuthAdminService interface {
 	JwtAdminAuthorization(admin models.Admin) (string, error)
 }
 
-func NewAuthService(repo authadmin.IAdminRepo) *AuthAdminService {
-	return &AuthAdminService{repo: repo}
+func NewAuthService(repo authadmin.IAdminRepo, secret string) *AuthAdminService {
+	return &AuthAdminService{repo: repo, secretKey: secret}
 }

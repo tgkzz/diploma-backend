@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"reflect"
 	"regexp"
 	"strings"
 )
@@ -22,4 +23,25 @@ func IsPasswordStrong(password string) bool {
 		hasNumber = regexp.MustCompile(`[0-9]`).MatchString(password)
 	)
 	return hasMinLen && hasUpper && hasLower && hasNumber
+}
+
+func IsValid(data interface{}) bool {
+	val := reflect.ValueOf(data)
+
+	if val.Kind() != reflect.Struct {
+		return false // Не структура.
+	}
+
+	for i := 0; i < val.NumField(); i++ {
+		field := val.Field(i)
+
+		if field.Kind() == reflect.String {
+			value := field.String()
+			if strings.TrimSpace(value) == "" {
+				return false // Найдено пустое или состоящее из пробелов поле.
+			}
+		}
+	}
+
+	return true
 }

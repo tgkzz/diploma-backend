@@ -6,6 +6,10 @@ import (
 )
 
 func validateUserData(user models.User) error {
+	if !pkg.IsValid(user) {
+		return models.ErrEmptyness
+	}
+
 	if !pkg.IsEmailValid(user.Email) {
 		return models.ErrInvalidEmail
 	}

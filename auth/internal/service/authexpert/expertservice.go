@@ -6,7 +6,8 @@ import (
 )
 
 type ExpertService struct {
-	repo authexpert.IExpertRepo
+	repo      authexpert.IExpertRepo
+	secretKey string
 }
 
 type IExpertService interface {
@@ -17,8 +18,9 @@ type IExpertService interface {
 	JwtExpertAuthorization(expert models.Expert) (string, error)
 }
 
-func NewExpertService(repo authexpert.IExpertRepo) *ExpertService {
+func NewExpertService(repo authexpert.IExpertRepo, secretKey string) *ExpertService {
 	return &ExpertService{
-		repo: repo,
+		repo:      repo,
+		secretKey: secretKey,
 	}
 }

@@ -6,7 +6,8 @@ import (
 )
 
 type AuthService struct {
-	repo auth.IAuthRepo
+	repo      auth.IAuthRepo
+	secretKey string
 }
 
 type IAuthService interface {
@@ -18,6 +19,6 @@ type IAuthService interface {
 	//Login(user models.User) (string, error)
 }
 
-func NewAuthService(repo auth.IAuthRepo) *AuthService {
-	return &AuthService{repo: repo}
+func NewAuthService(repo auth.IAuthRepo, secretKey string) *AuthService {
+	return &AuthService{repo: repo, secretKey: secretKey}
 }

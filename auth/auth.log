@@ -69,3 +69,11 @@ ERROR: 2024/01/29 13:12:24 main.go:45: listen tcp 127.0.0.1:8181: bind: Only one
 INFO: 2024/01/29 13:12:42 server.go:19: server is listening on http://localhost:8181
 ERROR: 2024/01/29 13:12:42 main.go:45: listen tcp 127.0.0.1:8181: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
 INFO: 2024/01/29 13:12:56 server.go:19: server is listening on http://localhost:8181
+INFO: 2024/01/31 05:19:24 server.go:19: server is listening on http://localhost:8181
+INFO: 2024/01/31 05:20:09 adminhandler.go:26: Successfully created new admin
+INFO: 2024/01/31 05:22:17 server.go:19: server is listening on http://localhost:8181
+INFO: 2024/01/31 05:31:08 adminhandler.go:26: Successfully created new admin
+INFO: 2024/01/31 05:31:28 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/01/31 05:31:30 adminhandler.go:18: some of the fields may be empty
+INFO: 2024/01/31 05:33:59 adminhandler.go:26: Successfully created new admin
+ERROR: 2024/01/31 05:34:34 adminhandler.go:18: some of the fields may be empty

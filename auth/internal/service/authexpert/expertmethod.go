@@ -8,6 +8,10 @@ import (
 )
 
 func (e ExpertService) CreateExpert(expert models.Expert) error {
+	if err := validateExpertData(expert); err != nil {
+		return err
+	}
+
 	var err error
 	expert.Password, err = pkg.HashPassword(expert.Password)
 	if err != nil {
@@ -55,7 +59,7 @@ func (e ExpertService) JwtExpertAuthorization(expert models.Expert) (string, err
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	t, err := token.SignedString([]byte("super-puper-secret-key"))
+	t, err := token.SignedString([]byte(e.secretKey))
 	if err != nil {
 		return "", err
 	}

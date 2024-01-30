@@ -38,7 +38,7 @@ func main() {
 
 	r := repository.NewRepository(db)
 
-	s := service.NewService(*r)
+	s := service.NewService(*r, cfg.SecretKey)
 
 	h := handler.NewHandler(s, infoLog, errLog)
 

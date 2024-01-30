@@ -6,9 +6,10 @@ import (
 )
 
 type Config struct {
-	Host string `env:"HOST"`
-	Port string `env:"PORT"`
-	DB   DB
+	Host      string `env:"HOST"`
+	Port      string `env:"PORT"`
+	SecretKey string `env:"SECRET_KEY"`
+	DB        DB
 }
 
 type DB struct {
@@ -23,8 +24,9 @@ func LoadConfig(path string) (Config, error) {
 	}
 
 	cfg := Config{
-		Host: os.Getenv("HOST"),
-		Port: os.Getenv("PORT"),
+		Host:      os.Getenv("HOST"),
+		Port:      os.Getenv("PORT"),
+		SecretKey: os.Getenv("SECRET_KEY"),
 		DB: DB{
 			DriverName:     os.Getenv("DRIVERNAME"),
 			DataSourceName: os.Getenv("DATASOURCENAME"),
