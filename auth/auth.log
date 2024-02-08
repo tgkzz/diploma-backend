@@ -77,3 +77,23 @@ INFO: 2024/01/31 05:31:28 server.go:19: server is listening on http://localhost:
 ERROR: 2024/01/31 05:31:30 adminhandler.go:18: some of the fields may be empty
 INFO: 2024/01/31 05:33:59 adminhandler.go:26: Successfully created new admin
 ERROR: 2024/01/31 05:34:34 adminhandler.go:18: some of the fields may be empty
+INFO: 2024/01/31 11:55:33 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/02/08 14:05:39 main.go:36: NewDB sql: unknown driver "" (forgotten import?)
+INFO: 2024/02/08 14:08:08 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/02/08 14:08:13 authhandler.go:19: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
+INFO: 2024/02/08 14:08:21 authhandler.go:33: Successfully created new user
+INFO: 2024/02/08 14:09:19 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/02/08 14:25:45 authhandler.go:19: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
+INFO: 2024/02/08 14:32:53 server.go:19: server is listening on http://localhost:8181
+ERROR: 2024/02/08 14:33:18 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:33:49 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:34:03 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:34:04 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:34:04 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:41:23 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:41:36 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:51:30 authhandler.go:47: sql: no rows in result set
+ERROR: 2024/02/08 14:59:22 authhandler.go:47: sql: no rows in result set
+INFO: 2024/02/08 15:07:16 authhandler.go:33: Successfully created new user
+INFO: 2024/02/08 15:10:17 authhandler.go:33: Successfully created new user
+ERROR: 2024/02/08 15:10:53 authhandler.go:19: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"

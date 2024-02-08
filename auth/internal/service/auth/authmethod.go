@@ -54,7 +54,6 @@ func (a AuthService) JwtAuthorization(user models.User) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	//TODO: implement normal key for signing
 	t, err := token.SignedString([]byte(a.secretKey))
 	if err != nil {
 		return "", err

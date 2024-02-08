@@ -8,13 +8,13 @@ import (
 type Config struct {
 	Host      string `env:"HOST"`
 	Port      string `env:"PORT"`
-	SecretKey string `env:"SECRET_KEY"`
+	SecretKey string `env:"JWT_SECRET_KEY"`
 	DB        DB
 }
 
 type DB struct {
-	DriverName     string `env:"DRIVERNAME"`
-	DataSourceName string `env:"DATASOURCENAME"`
+	DriverName     string `env:"DRIVER_NAME"`
+	DataSourceName string `env:"DATA_SOURCE_NAME"`
 }
 
 func LoadConfig(path string) (Config, error) {
@@ -26,10 +26,10 @@ func LoadConfig(path string) (Config, error) {
 	cfg := Config{
 		Host:      os.Getenv("HOST"),
 		Port:      os.Getenv("PORT"),
-		SecretKey: os.Getenv("SECRET_KEY"),
+		SecretKey: os.Getenv("JWT_SECRET_KEY"),
 		DB: DB{
-			DriverName:     os.Getenv("DRIVERNAME"),
-			DataSourceName: os.Getenv("DATASOURCENAME"),
+			DriverName:     os.Getenv("DRIVER_NAME"),
+			DataSourceName: os.Getenv("DATA_SOURCE_NAME"),
 		},
 	}
 
