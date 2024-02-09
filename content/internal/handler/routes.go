@@ -19,9 +19,12 @@ func (h Handler) Routes() *echo.Echo {
 	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
 
 	courseApi := e.Group("/course")
-	courseApi.POST("/create", h.createCourse)
+
+	courseApi.GET("/", h.getAllPost)
 	courseApi.GET("/id/:id", h.getCourseById)
 	courseApi.GET("/name/:name", h.getCourseByName)
+
+	courseApi.POST("/create", h.createCourse)
 
 	return e
 }

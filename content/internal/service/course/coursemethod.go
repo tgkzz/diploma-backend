@@ -13,3 +13,7 @@ func (c CourseService) GetCourseByName(courseName string) (model.Course, error) 
 func (c CourseService) GetCourseById(id int) (model.Course, error) {
 	return c.repo.GetCourseById(id)
 }
+
+func (c CourseService) GetAllCourse() ([]model.Course, error) {
+	return c.repo.GetAllCourse()
+}

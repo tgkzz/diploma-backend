@@ -36,6 +36,33 @@ func (c CourseRepo) GetCourseById(id int) (model.Course, error) {
 	return course, nil
 }
 
+func (c CourseRepo) GetAllCourse() ([]model.Course, error) {
+	res := []model.Course{}
+
+	query := "SELECT id, name, description, link, cost FROM course"
+
+	rows, err := c.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var s model.Course
+		err := rows.Scan(&s.Id, &s.Name, &s.Description, &s.Link, &s.Cost)
+		if err != nil {
+			return nil, err
+		}
+		res = append(res, s)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 // DeleteCourseByName TODO: think of reasons for such method
 func (c CourseRepo) DeleteCourseByName(courseName string) error {
 	return nil

@@ -42,3 +42,20 @@ func (h *Handler) getCourseById(c echo.Context) error {
 	h.infoLogger.Print("Successfully got course")
 	return c.JSON(http.StatusCreated, successResponse)
 }
+
+func (h *Handler) getAllPost(c echo.Context) error {
+	res, err := h.service.Course.GetAllCourse()
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	successResponse := map[string]interface{}{
+		"status":  "success",
+		"message": "Successfully got all courses",
+		"course":  res,
+	}
+
+	h.infoLogger.Print("Successfully got course")
+	return c.JSON(http.StatusCreated, successResponse)
+}
