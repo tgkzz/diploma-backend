@@ -8,3 +8,110 @@ INFO: 2024/02/09 23:23:22 posthandler.go:27: Successfully created new course
 INFO: 2024/02/09 23:23:27 gethandler.go:59: Successfully got course
 INFO: 2024/02/09 23:25:07 posthandler.go:27: Successfully created new course
 INFO: 2024/02/09 23:25:17 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:15:53 server.go:19: server is listening on http://localhost:8282
+INFO: 2024/02/10 03:17:31 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:17:31 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:23:48 server.go:19: server is listening on http://localhost:8282
+INFO: 2024/02/10 03:23:52 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:23:52 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:30:59 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:30:59 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:45:08 gethandler.go:59: Successfully got course
+INFO: 2024/02/10 03:45:08 gethandler.go:59: Successfully got course
+ERROR: 2024/02/10 03:49:39 gethandler.go:32: sql: no rows in result set
+ERROR: 2024/02/10 03:49:49 gethandler.go:13: sql: no rows in result set
+INFO: 2024/02/10 03:51:25 server.go:19: server is listening on http://localhost:8282
+ERROR: 2024/02/10 03:51:27 gethandler.go:36: sql: no rows in result set
+INFO: 2024/02/10 03:53:20 server.go:19: server is listening on http://localhost:8282
+ERROR: 2024/02/10 03:53:21 gethandler.go:36: sql: no rows in result set
+INFO: 2024/02/10 03:57:57 server.go:19: server is listening on http://localhost:8282
+INFO: 2024/02/10 03:58:02 gethandler.go:46: Successfully got course
+ERROR: 2024/02/10 04:08:31 gethandler.go:14: sql: no rows in result set
+INFO: 2024/02/10 04:14:50 server.go:19: server is listening on http://localhost:8282
+INFO: 2024/02/10 04:19:23 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:19:23 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:19:53 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:19:53 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:21:02 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:21:02 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:22:02 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:22:02 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:22:31 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:22:31 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:22:48 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:22:48 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:23:16 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:23:16 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:23:58 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:23:58 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:24:43 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:24:46 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:24:46 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:24:54 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:26:56 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:26:58 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:26:58 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:27:54 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:27:54 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:28:58 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:28:58 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:29:08 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:29:12 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:29:12 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:29:40 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:30:12 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:30:12 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:30:33 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:33:28 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:33:31 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:33:31 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:33:34 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:33:34 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:35:30 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:35:33 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:35:35 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:35:35 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:35:57 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:35:57 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:36:05 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:36:05 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:36:45 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:36:45 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:38:31 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:38:31 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:38:33 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:38:33 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:38:39 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:38:39 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:39:39 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:39:39 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:45:45 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:45:45 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:45:45 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:45:47 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:45:47 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:45:47 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:45:47 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:20 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:20 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:20 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:20 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:22 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:22 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:22 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:22 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:22 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:46:22 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 04:48:37 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:48:37 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:48:44 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 04:48:44 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 05:44:00 server.go:19: server is listening on http://localhost:8282
+INFO: 2024/02/10 05:44:15 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 05:44:15 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 05:44:17 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 05:44:17 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 05:44:54 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 05:44:54 gethandler.go:65: Successfully got course
+INFO: 2024/02/10 05:44:57 gethandler.go:29: Successfully got course
+INFO: 2024/02/10 05:44:57 gethandler.go:29: Successfully got course

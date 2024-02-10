@@ -12,6 +12,7 @@ type CourseService struct {
 type ICourseService interface {
 	CreateNewCourse(course model.Course) error
 	GetCourseByName(courseName string) (model.Course, error)
+	GetCourseById(id string) (model.Course, error)
 	GetAllCourse() ([]model.Course, error)
 }
 

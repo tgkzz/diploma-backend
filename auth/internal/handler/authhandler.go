@@ -61,6 +61,8 @@ func (h *Handler) login(c echo.Context) error {
 		"status":  "success",
 		"message": "Successfully logged in",
 		"token":   token,
+		"fname":   user.FirstName,
+		"email":   user.Email,
 	}
 
 	return c.JSON(http.StatusOK, response)

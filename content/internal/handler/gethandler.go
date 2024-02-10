@@ -1,16 +1,22 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strings"
 )
 
 func (h *Handler) getCourseByName(c echo.Context) error {
 	name := c.Param("name")
+	fmt.Println(name)
 
 	res, err := h.service.Course.GetCourseByName(name)
 	if err != nil {
 		h.errorLogger.Print(err)
+		if strings.Contains(err.Error(), "sql: no rows in result set") {
+			return ErrorHandler(c, err, http.StatusNotFound)
+		}
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}
 
@@ -21,13 +27,13 @@ func (h *Handler) getCourseByName(c echo.Context) error {
 	}
 
 	h.infoLogger.Print("Successfully got course")
-	return c.JSON(http.StatusCreated, successResponse)
+	return c.JSON(http.StatusOK, successResponse)
 }
 
 func (h *Handler) getCourseById(c echo.Context) error {
 	id := c.Param("id")
 
-	res, err := h.service.Course.GetCourseByName(id)
+	res, err := h.service.Course.GetCourseById(id)
 	if err != nil {
 		h.errorLogger.Print(err)
 		return ErrorHandler(c, err, http.StatusInternalServerError)
@@ -40,7 +46,7 @@ func (h *Handler) getCourseById(c echo.Context) error {
 	}
 
 	h.infoLogger.Print("Successfully got course")
-	return c.JSON(http.StatusCreated, successResponse)
+	return c.JSON(http.StatusOK, successResponse)
 }
 
 func (h *Handler) getAllPost(c echo.Context) error {
@@ -57,5 +63,5 @@ func (h *Handler) getAllPost(c echo.Context) error {
 	}
 
 	h.infoLogger.Print("Successfully got course")
-	return c.JSON(http.StatusCreated, successResponse)
+	return c.JSON(http.StatusOK, successResponse)
 }
