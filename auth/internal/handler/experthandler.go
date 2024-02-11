@@ -57,3 +57,19 @@ func (h *Handler) loginExpert(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) getAllExperts(c echo.Context) error {
+	res, err := h.service.ExpertAuth.GetAllExperts()
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status":  "success",
+		"message": "Successfully got all experts",
+		"experts": res,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}

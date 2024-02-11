@@ -23,11 +23,11 @@ func (a AuthRepo) CreateUser(user models.User) error {
 
 // READ
 func (a AuthRepo) GetUserByEmail(email string) (models.User, error) {
-	query := "SELECT email, password, fname, lname from users WHERE email = $1"
+	query := "SELECT id, email, password, fname, lname from users WHERE email = $1"
 
 	var user models.User
 
-	err := a.DB.QueryRow(query, email).Scan(&user.Email, &user.Password, &user.FirstName, &user.LastName)
+	err := a.DB.QueryRow(query, email).Scan(&user.Id, &user.Email, &user.Password, &user.FirstName, &user.LastName)
 
 	return user, err
 }

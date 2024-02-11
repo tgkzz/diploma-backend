@@ -2,6 +2,7 @@ package handler
 
 import (
 	"auth/internal/models"
+	"errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strings"
@@ -63,6 +64,30 @@ func (h *Handler) login(c echo.Context) error {
 		"token":   token,
 		"fname":   user.FirstName,
 		"email":   user.Email,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+func (h *Handler) getUserByEmail(c echo.Context) error {
+	email := c.QueryParams().Get("email")
+	if email == "" {
+		return ErrorHandler(c, errors.New("empty email"), http.StatusInternalServerError)
+	}
+
+	res, err := h.service.Auth.GetUserByEmail(email)
+	if err != nil {
+		h.errorLogger.Print(err)
+		if strings.Contains(err.Error(), "sql: no rows in result set") {
+			return ErrorHandler(c, err, http.StatusNotFound)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status":  "success",
+		"message": "Successfully got user by email",
+		"email":   res,
 	}
 
 	return c.JSON(http.StatusOK, response)

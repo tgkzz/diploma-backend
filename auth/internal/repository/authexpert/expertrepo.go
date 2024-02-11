@@ -13,6 +13,7 @@ type IExpertRepo interface {
 	CreateExpert(expert models.Expert) error
 	DeleteExpertByEmail(email string) error
 	GetExpertByEmail(email string) (models.Expert, error)
+	GetAllExpert() ([]models.Expert, error)
 }
 
 func NewExpertRepo(db *sql.DB) *ExpertRepo {

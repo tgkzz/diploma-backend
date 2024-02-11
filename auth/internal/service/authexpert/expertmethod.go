@@ -33,6 +33,10 @@ func (e ExpertService) GetExpertByEmail(email string) (models.Expert, error) {
 	return e.repo.GetExpertByEmail(email)
 }
 
+func (e ExpertService) GetAllExperts() ([]models.Expert, error) {
+	return e.repo.GetAllExpert()
+}
+
 func (e ExpertService) CheckExpertCreds(expert models.Expert) (models.Expert, error) {
 	exp, err := e.repo.GetExpertByEmail(expert.Email)
 	if err != nil {

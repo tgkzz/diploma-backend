@@ -22,6 +22,8 @@ func (h *Handler) Routes() *echo.Echo {
 	authApi.POST("/register", h.register)
 	authApi.POST("/login", h.login)
 
+	authApi.GET("/getUserByEmail", h.getUserByEmail)
+
 	adminApi := e.Group("/admin")
 	adminApi.POST("/register", h.registerAdmin)
 	adminApi.POST("/login", h.loginAdmin)
@@ -29,6 +31,7 @@ func (h *Handler) Routes() *echo.Echo {
 	expertApi := e.Group("/expert")
 	expertApi.POST("/register", h.registerExpert)
 	expertApi.POST("/login", h.loginExpert)
+	expertApi.GET("/getAllExperts", h.getAllExperts)
 
 	return e
 }

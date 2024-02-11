@@ -15,10 +15,11 @@ type Admin struct {
 }
 
 type Expert struct {
-	Id        int
-	FirstName string  `json:"firstName"`
-	LastName  string  `json:"lastName"`
-	Email     string  `json:"email"`
-	Cost      float64 `json:"cost"`
-	Password  string  `json:"password"`
+	Id          int
+	FirstName   string  `json:"firstName"`
+	LastName    string  `json:"lastName"`
+	Email       string  `json:"email"`
+	Cost        float64 `json:"cost"`
+	Password    string  `json:"password"`
+	Description string
 }

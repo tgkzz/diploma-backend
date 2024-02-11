@@ -11,6 +11,32 @@ func (e ExpertRepo) CreateExpert(expert models.Expert) error {
 
 }
 
+func (e ExpertRepo) GetAllExpert() ([]models.Expert, error) {
+	var experts []models.Expert
+
+	query := `SELECT id, fname, lname, email, cost, description FROM expert`
+	rows, err := e.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var expert models.Expert
+		err := rows.Scan(&expert.Id, &expert.FirstName, &expert.LastName, &expert.Email, &expert.Cost, &expert.Description)
+		if err != nil {
+			return nil, err
+		}
+		experts = append(experts, expert)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return experts, nil
+}
+
 func (e ExpertRepo) DeleteExpertByEmail(email string) error {
 	query := `DELETE FROM expert WHERE email = $1`
 
