@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strings"
@@ -9,7 +8,6 @@ import (
 
 func (h *Handler) getCourseByName(c echo.Context) error {
 	name := c.Param("name")
-	fmt.Println(name)
 
 	res, err := h.service.Course.GetCourseByName(name)
 	if err != nil {
