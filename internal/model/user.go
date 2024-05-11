@@ -23,3 +23,12 @@ type Expert struct {
 	Password    string  `json:"password"`
 	Description string
 }
+
+type SendEmailCodeRequest struct {
+	Email string `json:"email"`
+}
+
+type CheckEmailCodeRequest struct {
+	Email string `json:"email"`
+	Code  string `json:"code"`
+}

@@ -2,3 +2,25 @@ INFO: 2024/05/08 20:42:59 server.go:19: server is listening on http://localhost:
 INFO: 2024/05/08 21:06:08 server.go:19: server is listening on http://localhost:8181
 INFO: 2024/05/08 21:22:08 server.go:19: server is listening on http://localhost:8181
 INFO: 2024/05/08 21:29:35 server.go:19: server is listening on http://localhost:8181
+INFO: 2024/05/08 21:58:01 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/08 22:14:05 server.go:19: server is listening on http://0.0.0.08181
+INFO: 2024/05/08 22:14:45 user.go:34: Successfully created new user
+INFO: 2024/05/11 17:41:49 server.go:19: server is listening on http://0.0.0.010000
+INFO: 2024/05/11 19:23:51 server.go:19: server is listening on http://0.0.0.010000
+INFO: 2024/05/11 19:24:20 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/11 19:31:16 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/11 19:31:45 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/11 19:32:30 user.go:104: Post "https://api.mailersend.com/v1/email": net/http: TLS handshake timeout
+ERROR: 2024/05/11 19:40:33 main.go:37: NewDB dial tcp: lookup ep-morning-lab-a2okc0em.eu-central-1.aws.neon.tech: no such host
+ERROR: 2024/05/11 19:41:57 main.go:37: NewDB dial tcp: lookup ep-morning-lab-a2okc0em.eu-central-1.aws.neon.tech: no such host
+INFO: 2024/05/11 19:44:05 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/11 19:44:14 user.go:104: dial tcp: lookup redis-11271.c242.eu-west-1-2.ec2.cloud.redislabs.com: i/o timeout
+INFO: 2024/05/11 19:46:40 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/11 19:46:48 user.go:104: POST https://api.mailersend.com/v1/email: 422 The from.email domain must be verified in your account to send emails. #MS42207
+ERROR: 2024/05/11 19:51:08 user.go:104: POST https://api.mailersend.com/v1/email: 422 The from.email domain must be verified in your account to send emails. #MS42207
+INFO: 2024/05/11 19:52:44 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/11 19:52:48 user.go:104: POST https://api.mailersend.com/v1/email: 422 The from.email must be a valid email address. #MS42208
+INFO: 2024/05/11 19:54:51 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/11 19:54:56 user.go:104: POST https://api.mailersend.com/v1/email: 422 The from.email must be a valid email address. #MS42208
+INFO: 2024/05/11 19:55:50 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/11 19:55:53 user.go:104: POST https://api.mailersend.com/v1/email: 422 The from.email domain must be verified in your account to send emails. #MS42207

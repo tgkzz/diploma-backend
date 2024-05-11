@@ -1,6 +1,7 @@
 package main
 
 import (
+	redis "github.com/redis/go-redis/v9"
 	"log"
 	"os"
 	"server/internal/config"
@@ -36,9 +37,15 @@ func main() {
 		errLog.Fatalf("NewDB %s", err)
 	}
 
+	redisCli := redis.NewClient(&redis.Options{
+		Addr:     cfg.Redis.Addr,
+		Username: cfg.Redis.Username,
+		Password: cfg.Redis.Password,
+	})
+
 	r := repository.NewRepository(db)
 
-	s := service.NewService(*r, cfg.SecretKey)
+	s := service.NewService(*r, cfg.SecretKey, cfg.MailSenderKey, redisCli)
 
 	h := handler.NewHandler(s, infoLog, errLog)
 

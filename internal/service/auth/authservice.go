@@ -1,7 +1,12 @@
 package auth
 
 import (
+	"context"
+	"errors"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/mailersend/mailersend-go"
+	"github.com/redis/go-redis/v9"
+	"net/http"
 	"server/internal/model"
 	"server/internal/pkg"
 	"server/internal/repository/auth"
@@ -10,6 +15,8 @@ import (
 
 type AuthService struct {
 	repo      auth.IAuthRepo
+	ms        *mailersend.Mailersend
+	redis     *redis.Client
 	secretKey string
 }
 
@@ -19,12 +26,25 @@ type IAuthService interface {
 	DeleteUserByEmail(email string) error
 	CheckUserCreds(creds model.User) (model.User, error)
 	JwtAuthorization(user model.User) (string, error)
+	SendEmailCode(email string, ctx context.Context) error
+	CheckCode(email, code string, ctx context.Context) error
 	//Login(user models.User) (string, error)
 }
 
-func NewAuthService(repo auth.IAuthRepo, secretKey string) *AuthService {
-	return &AuthService{repo: repo, secretKey: secretKey}
+func NewAuthService(repo auth.IAuthRepo, secretKey string, mailsenderKey string, client *redis.Client) *AuthService {
+	ms := mailersend.NewMailersend(mailsenderKey)
+
+	return &AuthService{
+		redis:     client,
+		repo:      repo,
+		secretKey: secretKey,
+		ms:        ms,
+	}
 }
+
+const (
+	VerificationCodeSubject = "Verification code"
+)
 
 func validateUserData(user model.User) error {
 	if !pkg.IsValid(user) {
@@ -99,4 +119,65 @@ func (a AuthService) JwtAuthorization(user model.User) (string, error) {
 	}
 
 	return t, nil
+}
+
+func (a AuthService) SendEmailCode(email string, ctx context.Context) error {
+	code, _ := pkg.GenerateCode(6)
+
+	if err := a.redis.Set(ctx, email, code, 10*time.Minute).Err(); err != nil {
+		return err
+	}
+
+	if err := a.sendEmail(email, code, ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a AuthService) CheckCode(email, code string, ctx context.Context) error {
+	stringCmd := a.redis.Get(ctx, email)
+	if stringCmd.Err() != nil {
+		return stringCmd.Err()
+	}
+
+	if stringCmd.Val() != code {
+		return model.ErrIncorrectCode
+	}
+
+	return nil
+}
+
+func (a AuthService) sendEmail(email, text string, ctx context.Context) error {
+	from := mailersend.From{
+		Name:  "Kamal",
+		Email: "foreverwantlive@gmail.com",
+	}
+
+	to := []mailersend.Recipient{
+		{
+			Name:  "Client",
+			Email: email,
+		},
+	}
+
+	//sendAt := time.Now().Add(time.Second * 30).Unix()
+
+	msg := a.ms.Email.NewMessage()
+
+	msg.SetFrom(from)
+	msg.SetRecipients(to)
+	msg.SetSubject(VerificationCodeSubject)
+	msg.SetText(text)
+
+	res, err := a.ms.Email.Send(ctx, msg)
+	if err != nil {
+		return err
+	}
+
+	if res.StatusCode >= http.StatusBadRequest {
+		return errors.New("mailsender gave an error")
+	}
+
+	return nil
 }

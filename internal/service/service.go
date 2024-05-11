@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/redis/go-redis/v9"
 	"server/internal/repository"
 	"server/internal/service/auth"
 	"server/internal/service/authadmin"
@@ -13,9 +14,9 @@ type Service struct {
 	ExpertAuth authexpert.IExpertService
 }
 
-func NewService(repo repository.Repository, secret string) *Service {
+func NewService(repo repository.Repository, secret string, mailsenderSecret string, client *redis.Client) *Service {
 	return &Service{
-		Auth:       auth.NewAuthService(repo, secret),
+		Auth:       auth.NewAuthService(repo, secret, mailsenderSecret, client),
 		AdminAuth:  authadmin.NewAuthService(repo, secret),
 		ExpertAuth: authexpert.NewExpertService(repo, secret),
 	}

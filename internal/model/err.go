@@ -10,4 +10,5 @@ var (
 	ErrInvalidName                 error = errors.New("firstname and lastname cannot be empty")
 	ErrIncorrectUsernameOrPassword error = errors.New("incorrect username or password")
 	ErrEmptyness                   error = errors.New("some of the fields may be empty")
+	ErrIncorrectCode                     = errors.New("incorrect code")
 )

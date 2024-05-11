@@ -92,3 +92,38 @@ func (h *Handler) getUserByEmail(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) sendEmailCode(c echo.Context) error {
+	var req model.SendEmailCodeRequest
+	if err := c.Bind(&req); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	if err := h.service.Auth.SendEmailCode(req.Email, c.Request().Context()); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status":  "success",
+		"message": "Successfully send code",
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+func (h *Handler) checkEmailCode(c echo.Context) error {
+	var req model.CheckEmailCodeRequest
+	if err := c.Bind(&req); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	if err := h.service.Auth.CheckCode(req.Email, req.Code, c.Request().Context()); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.JSON(http.StatusNoContent, nil)
+}

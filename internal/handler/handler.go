@@ -40,6 +40,8 @@ func (h *Handler) Routes() *echo.Echo {
 	})
 
 	authApi := e.Group("/auth")
+	authApi.POST("/send-email", h.sendEmailCode)
+	authApi.POST("/check-code", h.checkEmailCode)
 	authApi.POST("/register", h.register)
 	authApi.POST("/login", h.login)
 
