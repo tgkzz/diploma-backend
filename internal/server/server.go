@@ -10,7 +10,7 @@ import (
 
 func RunServer(cfg config.Config, e *echo.Echo, infoLog *log.Logger) error {
 	server := &http.Server{
-		Addr:         cfg.Host + cfg.Port,
+		Addr:         cfg.Host + ":" + cfg.Port,
 		Handler:      e,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,

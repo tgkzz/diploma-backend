@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"log"
+	"net/http"
 	"server/internal/service"
 )
 
@@ -33,6 +34,10 @@ func (h *Handler) Routes() *echo.Echo {
 
 	// Rate limiter
 	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
+
+	e.GET("/", func(e echo.Context) error {
+		return e.JSON(http.StatusOK, "ping")
+	})
 
 	authApi := e.Group("/auth")
 	authApi.POST("/register", h.register)
