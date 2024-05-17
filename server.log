@@ -24,3 +24,16 @@ INFO: 2024/05/11 19:54:51 server.go:19: server is listening on http://localhost8
 ERROR: 2024/05/11 19:54:56 user.go:104: POST https://api.mailersend.com/v1/email: 422 The from.email must be a valid email address. #MS42208
 INFO: 2024/05/11 19:55:50 server.go:19: server is listening on http://localhost8181
 ERROR: 2024/05/11 19:55:53 user.go:104: POST https://api.mailersend.com/v1/email: 422 The from.email domain must be verified in your account to send emails. #MS42207
+INFO: 2024/05/18 01:50:00 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 01:53:32 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 01:56:48 user.go:33: Successfully created new user
+INFO: 2024/05/18 01:59:52 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 02:02:55 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 02:37:00 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 02:38:22 user.go:148: pq: ошибка синтаксиса (примерное положение: ",")
+ERROR: 2024/05/18 02:39:30 user.go:148: pq: ошибка синтаксиса (примерное положение: ",")
+ERROR: 2024/05/18 02:39:45 user.go:148: pq: ошибка синтаксиса (примерное положение: ",")
+INFO: 2024/05/18 02:41:40 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 02:42:53 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 02:42:59 user.go:148: sql: converting argument $1 type: unsupported type model.UpdateUserRequest, a struct
+INFO: 2024/05/18 02:45:00 server.go:19: server is listening on http://localhost8181

@@ -23,11 +23,13 @@ type AuthService struct {
 type IAuthService interface {
 	CreateNewUser(user model.User) error
 	GetUserByEmail(email string) (model.User, error)
+	GetUserById(id int) (model.User, error)
 	DeleteUserByEmail(email string) error
 	CheckUserCreds(creds model.User) (model.User, error)
 	JwtAuthorization(user model.User) (string, error)
 	SendEmailCode(email string, ctx context.Context) error
 	CheckCode(email, code string, ctx context.Context) error
+	UpdateUserByEmail(email string, req model.UpdateUserRequest) error
 	//Login(user models.User) (string, error)
 }
 
@@ -177,6 +179,27 @@ func (a AuthService) sendEmail(email, text string, ctx context.Context) error {
 
 	if res.StatusCode >= http.StatusBadRequest {
 		return errors.New("mailsender gave an error")
+	}
+
+	return nil
+}
+
+func (a AuthService) GetUserById(id int) (model.User, error) {
+	return a.repo.GetUserById(id)
+}
+
+func (a AuthService) UpdateUserByEmail(email string, req model.UpdateUserRequest) error {
+	u, err := a.GetUserByEmail(email)
+	if err != nil {
+		return err
+	}
+
+	if req.HasPassword() {
+		req = req.SetPassword(req.Password)
+	}
+
+	if err := a.repo.UpdateUser(req.SetId(u.Id)); err != nil {
+		return err
 	}
 
 	return nil

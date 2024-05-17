@@ -47,7 +47,7 @@ func main() {
 
 	s := service.NewService(*r, cfg.SecretKey, cfg.MailSenderKey, redisCli)
 
-	h := handler.NewHandler(s, infoLog, errLog)
+	h := handler.NewHandler(s, infoLog, errLog, cfg.SecretKey)
 
 	errLog.Fatal(server.RunServer(cfg, h.Routes(), infoLog))
 }

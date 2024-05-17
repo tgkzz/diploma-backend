@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"server/internal/model"
@@ -70,12 +69,9 @@ func (h *Handler) login(c echo.Context) error {
 }
 
 func (h *Handler) getUserByEmail(c echo.Context) error {
-	email := c.QueryParams().Get("email")
-	if email == "" {
-		return ErrorHandler(c, errors.New("empty email"), http.StatusInternalServerError)
-	}
+	email := c.Get("email")
 
-	res, err := h.service.Auth.GetUserByEmail(email)
+	res, err := h.service.Auth.GetUserByEmail(email.(string))
 	if err != nil {
 		h.errorLogger.Print(err)
 		if strings.Contains(err.Error(), "sql: no rows in result set") {
@@ -87,7 +83,7 @@ func (h *Handler) getUserByEmail(c echo.Context) error {
 	response := map[string]interface{}{
 		"status":  "success",
 		"message": "Successfully got user by email",
-		"email":   res,
+		"user":    res,
 	}
 
 	return c.JSON(http.StatusOK, response)
@@ -126,4 +122,32 @@ func (h *Handler) checkEmailCode(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusNoContent, nil)
+}
+
+func (h *Handler) deleteUser(c echo.Context) error {
+	email := c.Get("email")
+
+	if err := h.service.Auth.DeleteUserByEmail(email.(string)); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}
+
+func (h *Handler) UpdateUser(c echo.Context) error {
+	email := c.Get("email")
+
+	var req model.UpdateUserRequest
+	if err := c.Bind(&req); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	if err := h.service.Auth.UpdateUserByEmail(email.(string), req); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return nil
 }

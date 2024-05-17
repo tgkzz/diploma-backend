@@ -12,13 +12,15 @@ type Handler struct {
 	service     *service.Service
 	infoLogger  *log.Logger
 	errorLogger *log.Logger
+	jwtSecret   string
 }
 
-func NewHandler(service *service.Service, info *log.Logger, err *log.Logger) *Handler {
+func NewHandler(service *service.Service, info *log.Logger, err *log.Logger, jwtSecret string) *Handler {
 	return &Handler{
 		service:     service,
 		infoLogger:  info,
 		errorLogger: err,
+		jwtSecret:   jwtSecret,
 	}
 }
 
@@ -40,21 +42,33 @@ func (h *Handler) Routes() *echo.Echo {
 	})
 
 	authApi := e.Group("/auth")
-	authApi.POST("/send-email", h.sendEmailCode)
-	authApi.POST("/check-code", h.checkEmailCode)
-	authApi.POST("/register", h.register)
-	authApi.POST("/login", h.login)
+	{
+		authApi.POST("/send-email", h.sendEmailCode)
+		authApi.POST("/check-code", h.checkEmailCode)
+		authApi.POST("/register", h.register)
+		authApi.POST("/login", h.login)
+	}
 
-	authApi.GET("/getUserByEmail", h.getUserByEmail)
+	user := e.Group("/user")
+	user.Use(h.jwtMiddleware)
+	{
+		user.GET("", h.getUserByEmail)
+		user.DELETE("", h.deleteUser)
+		user.PUT("", h.UpdateUser)
+	}
 
 	adminApi := e.Group("/admin")
-	adminApi.POST("/register", h.registerAdmin)
-	adminApi.POST("/login", h.loginAdmin)
+	{
+		adminApi.POST("/register", h.registerAdmin)
+		adminApi.POST("/login", h.loginAdmin)
+	}
 
 	expertApi := e.Group("/expert")
-	expertApi.POST("/register", h.registerExpert)
-	expertApi.POST("/login", h.loginExpert)
-	expertApi.GET("/getAllExperts", h.getAllExperts)
+	{
+		expertApi.POST("/register", h.registerExpert)
+		expertApi.POST("/login", h.loginExpert)
+		expertApi.GET("/getAllExperts", h.getAllExperts)
+	}
 
 	return e
 }
