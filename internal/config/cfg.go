@@ -12,11 +12,16 @@ type Config struct {
 	MailSenderKey string `env:"MAILERSEND_KEY"`
 	DB            DB
 	Redis         Redis
+	Mongo         Mongo
 }
 
 type DB struct {
 	DriverName     string `env:"DRIVER_NAME"`
 	DataSourceName string `env:"DATA_SOURCE_NAME"`
+}
+
+type Mongo struct {
+	Uri string `env:"MONGODB_URI"`
 }
 
 type Redis struct {
@@ -39,6 +44,9 @@ func LoadConfig(path string) (Config, error) {
 		DB: DB{
 			DriverName:     os.Getenv("DRIVER_NAME"),
 			DataSourceName: os.Getenv("DATA_SOURCE_NAME"),
+		},
+		Mongo: Mongo{
+			Uri: os.Getenv("MONGODB_URI"),
 		},
 		Redis: Redis{
 			Addr:     os.Getenv("REDIS_ADDR"),

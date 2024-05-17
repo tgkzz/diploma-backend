@@ -37,3 +37,10 @@ INFO: 2024/05/18 02:41:40 server.go:19: server is listening on http://localhost8
 INFO: 2024/05/18 02:42:53 server.go:19: server is listening on http://localhost8181
 ERROR: 2024/05/18 02:42:59 user.go:148: sql: converting argument $1 type: unsupported type model.UpdateUserRequest, a struct
 INFO: 2024/05/18 02:45:00 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 04:46:36 main.go:42: NewMongoDB error parsing uri: scheme must be "mongodb" or "mongodb+srv"
+ERROR: 2024/05/18 04:46:43 main.go:42: NewMongoDB error parsing uri: scheme must be "mongodb" or "mongodb+srv"
+INFO: 2024/05/18 04:47:34 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 04:47:57 course.go:13: results argument must be a pointer to a slice, but was a slice
+INFO: 2024/05/18 04:48:29 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 04:49:51 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 04:58:19 server.go:19: server is listening on http://localhost8181

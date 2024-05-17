@@ -57,6 +57,11 @@ func (h *Handler) Routes() *echo.Echo {
 		user.PUT("", h.UpdateUser)
 	}
 
+	course := e.Group("/course")
+	{
+		course.GET("/get-all-courses", h.GetAllCourses)
+	}
+
 	adminApi := e.Group("/admin")
 	{
 		adminApi.POST("/register", h.registerAdmin)

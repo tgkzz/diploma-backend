@@ -31,7 +31,7 @@ func NewExpertService(repo authexpert.IExpertRepo, secretKey string) *ExpertServ
 
 func validateExpertData(expert model.Expert) error {
 	if !pkg.IsValid(expert) {
-		return model.ErrEmptyness
+		return model.ErrEmptiness
 	}
 
 	if !pkg.IsEmailValid(expert.Email) {

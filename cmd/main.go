@@ -37,13 +37,18 @@ func main() {
 		errLog.Fatalf("NewDB %s", err)
 	}
 
+	mongoClient, err := repository.NewMongoDB(cfg.Mongo)
+	if err != nil {
+		errLog.Fatalf("NewMongoDB %s", err)
+	}
+
 	redisCli := redis.NewClient(&redis.Options{
 		Addr:     cfg.Redis.Addr,
 		Username: cfg.Redis.Username,
 		Password: cfg.Redis.Password,
 	})
 
-	r := repository.NewRepository(db)
+	r := repository.NewRepository(db, mongoClient)
 
 	s := service.NewService(*r, cfg.SecretKey, cfg.MailSenderKey, redisCli)
 

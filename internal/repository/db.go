@@ -1,7 +1,11 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
 	"server/internal/config"
 	"strings"
@@ -44,4 +48,23 @@ func createTable(db *sql.DB) error {
 		}
 	}
 	return err
+}
+
+func NewMongoDB(cfg config.Mongo) (*mongo.Client, error) {
+	ctx := context.Background()
+
+	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
+
+	opts := options.Client().ApplyURI(cfg.Uri).SetServerAPIOptions(serverAPI)
+
+	client, err := mongo.Connect(ctx, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := client.Database("admin").RunCommand(ctx, bson.D{{"ping", 1}}).Err(); err != nil {
+		return nil, err
+	}
+
+	return client, nil
 }

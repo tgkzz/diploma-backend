@@ -50,7 +50,7 @@ const (
 
 func validateUserData(user model.User) error {
 	if !pkg.IsValid(user) {
-		return model.ErrEmptyness
+		return model.ErrEmptiness
 	}
 
 	if !pkg.IsEmailValid(user.Email) {

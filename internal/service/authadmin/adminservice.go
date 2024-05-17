@@ -27,7 +27,7 @@ func NewAuthService(repo authadmin.IAdminRepo, secret string) *AuthAdminService 
 
 func ValidateAdminData(admin model.Admin) error {
 	if !pkg.IsValid(admin) {
-		return model.ErrEmptyness
+		return model.ErrEmptiness
 	}
 
 	if pkg.IsPasswordStrong(admin.Password) {
