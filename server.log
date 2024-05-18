@@ -71,3 +71,5 @@ INFO: 2024/05/18 20:13:26 server.go:19: server is listening on http://localhost8
 ERROR: 2024/05/18 20:13:38 course.go:13: error decoding key module_count: cannot decode string into an integer type
 INFO: 2024/05/18 20:14:46 server.go:19: server is listening on http://localhost8181
 INFO: 2024/05/18 20:15:48 user.go:34: Successfully created new user
+ERROR: 2024/05/18 20:30:13 user.go:20: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
+INFO: 2024/05/18 21:35:50 server.go:19: server is listening on http://0.0.0.010000
