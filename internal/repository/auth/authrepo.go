@@ -3,6 +3,7 @@ package auth
 import (
 	"database/sql"
 	"fmt"
+	"github.com/lib/pq"
 	"server/internal/model"
 	"strings"
 )
@@ -101,6 +102,9 @@ func (a AuthRepo) UpdateUser(req model.UpdateUserRequest) error {
 
 	_, err := a.DB.Exec(query, params...)
 	if err != nil {
+		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code == "23505" {
+			return model.ErrEmailIsAlreadyUser
+		}
 		return err
 	}
 

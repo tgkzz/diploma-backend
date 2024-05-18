@@ -21,6 +21,6 @@ func NewRepository(db *sql.DB, client *mongo.Client) *Repository {
 		IAuthRepo:   auth.NewAuthRepo(db),
 		IAdminRepo:  authadmin.NewAdminRepo(db),
 		IExpertRepo: authexpert.NewExpertRepo(db),
-		ICourseRepo: course.NewCourseService(client),
+		ICourseRepo: course.NewCourseService(client, db),
 	}
 }

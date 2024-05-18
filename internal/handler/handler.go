@@ -55,11 +55,19 @@ func (h *Handler) Routes() *echo.Echo {
 		user.GET("", h.getUserByEmail)
 		user.DELETE("", h.deleteUser)
 		user.PUT("", h.UpdateUser)
+
+		user.POST("/buy-course/:course_id", h.buyCourse)
+		userCourse := user.Group("")
+		userCourse.Use(h.courseAccessMiddleware)
+		{
+			userCourse.GET("/:course_id", h.getUserCourse)
+		}
 	}
 
 	course := e.Group("/course")
 	{
 		course.GET("/get-all-courses", h.GetAllCourses)
+		course.GET("/:course_id", h.GetCourse)
 	}
 
 	adminApi := e.Group("/admin")

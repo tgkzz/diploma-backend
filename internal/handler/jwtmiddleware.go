@@ -41,3 +41,26 @@ func (h *Handler) jwtMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		return next(c)
 	}
 }
+
+func (h *Handler) courseAccessMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		email := c.Get("email").(string)
+
+		courseID := c.Param("course_id")
+
+		user, err := h.service.Auth.GetUserByEmail(email)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, echo.Map{"error": "could not get user info"})
+		}
+
+		hasAccess, err := h.service.Course.CheckCourseAccess(user.Id, courseID)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, echo.Map{"error": "err getting access"})
+		}
+		if !hasAccess {
+			return c.JSON(http.StatusForbidden, echo.Map{"error": "Course access if forbidden"})
+		}
+
+		return next(c)
+	}
+}

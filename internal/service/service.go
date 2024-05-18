@@ -21,6 +21,6 @@ func NewService(repo repository.Repository, secret string, mailsenderSecret stri
 		Auth:       auth.NewAuthService(repo, secret, mailsenderSecret, client),
 		AdminAuth:  authadmin.NewAuthService(repo, secret),
 		ExpertAuth: authexpert.NewExpertService(repo, secret),
-		Course:     course.NewCourseService(repo),
+		Course:     course.NewCourseService(repo, repo),
 	}
 }

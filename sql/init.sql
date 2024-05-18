@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS experts (
     description TEXT
 );
 
--- must be moved to mongo
+-- moved to mongo
 -- CREATE TABLE IF NOT EXISTS course (
 --     id SERIAL PRIMARY KEY,
 --     name VARCHAR(255),
@@ -32,8 +32,9 @@ CREATE TABLE IF NOT EXISTS experts (
 CREATE TABLE IF NOT EXISTS course_transactions (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
-    course_id INTEGER,
-    cost NUMERIC
+    course_id VARCHAR(255),
+    cost NUMERIC,
+    CONSTRAINT unique_user_course UNIQUE (user_id, course_id)
 );
 
 CREATE TABLE IF NOT EXISTS meeting_transactions (

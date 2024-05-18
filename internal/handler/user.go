@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"server/internal/model"
@@ -146,8 +147,47 @@ func (h *Handler) UpdateUser(c echo.Context) error {
 
 	if err := h.service.Auth.UpdateUserByEmail(email.(string), req); err != nil {
 		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrEmailIsAlreadyUser) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}
 
 	return nil
+}
+
+func (h *Handler) buyCourse(c echo.Context) error {
+	email := c.Get("email")
+
+	courseId := c.Param("course_id")
+
+	if err := h.service.Course.BuyCourse(c.Request().Context(), courseId, email.(string)); err != nil {
+		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrNotFound) || errors.Is(err, model.ErrCourseAlreadyPurchased) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}
+
+func (h *Handler) getUserCourse(c echo.Context) error {
+	courseId := c.Param("course_id")
+
+	result, err := h.service.Course.GetCourse(c.Request().Context(), courseId)
+	if err != nil {
+		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrNotFound) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status": "success",
+		"course": result,
+	}
+
+	return c.JSON(http.StatusOK, response)
 }

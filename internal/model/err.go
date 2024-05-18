@@ -12,4 +12,6 @@ var (
 	ErrEmptiness                   error = errors.New("some of the fields may be empty")
 	ErrIncorrectCode               error = errors.New("incorrect code")
 	ErrNotFound                    error = errors.New("not found")
+	ErrCourseAlreadyPurchased      error = errors.New("course already purchased")
+	ErrEmailIsAlreadyUser          error = errors.New("email is already used")
 )

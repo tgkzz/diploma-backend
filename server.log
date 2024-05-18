@@ -44,3 +44,30 @@ ERROR: 2024/05/18 04:47:57 course.go:13: results argument must be a pointer to a
 INFO: 2024/05/18 04:48:29 server.go:19: server is listening on http://localhost8181
 INFO: 2024/05/18 04:49:51 server.go:19: server is listening on http://localhost8181
 INFO: 2024/05/18 04:58:19 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 19:16:12 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 19:17:30 course.go:33: not found
+INFO: 2024/05/18 19:17:53 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 19:17:55 course.go:33: not found
+INFO: 2024/05/18 19:19:28 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 19:19:41 course.go:33: not found
+INFO: 2024/05/18 19:20:56 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 19:21:02 course.go:33: not found
+ERROR: 2024/05/18 19:22:31 course.go:33: not found
+INFO: 2024/05/18 19:24:16 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 19:24:19 course.go:33: not found
+INFO: 2024/05/18 19:35:22 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 19:38:30 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 19:39:10 user.go:34: Successfully created new user
+ERROR: 2024/05/18 19:39:16 user.go:20: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
+ERROR: 2024/05/18 19:41:09 user.go:162: course already purchased
+INFO: 2024/05/18 19:42:16 user.go:34: Successfully created new user
+ERROR: 2024/05/18 19:42:45 user.go:162: course already purchased
+INFO: 2024/05/18 19:42:51 user.go:34: Successfully created new user
+ERROR: 2024/05/18 19:43:38 user.go:144: code=400, message=Syntax error: offset=35, error=invalid character '}' looking for beginning of object key string, internal=invalid character '}' looking for beginning of object key string
+ERROR: 2024/05/18 19:43:56 user.go:149: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
+INFO: 2024/05/18 19:45:46 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 19:45:48 user.go:149: email is already used
+INFO: 2024/05/18 20:13:26 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/18 20:13:38 course.go:13: error decoding key module_count: cannot decode string into an integer type
+INFO: 2024/05/18 20:14:46 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/18 20:15:48 user.go:34: Successfully created new user

@@ -2,17 +2,21 @@ package course
 
 import (
 	"context"
+	"database/sql"
+	"github.com/lib/pq"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"server/internal/model"
 )
 
 const (
 	DbName           = "hackaton"
-	CourseCollection = "course"
+	CourseCollection = "courses"
 )
 
 type CourseRepo struct {
+	pgDb   *sql.DB
 	client *mongo.Client
 	db     *mongo.Database
 }
@@ -20,19 +24,27 @@ type CourseRepo struct {
 type ICourseRepo interface {
 	GetCourse(ctx context.Context, id string) (model.Course, error)
 	GetCourses(ctx context.Context) ([]model.Course, error)
+	CreateCourseTransaction(tr model.Transaction) error
+	CheckCourseAccess(userID int, courseID string) (bool, error)
 }
 
-func NewCourseService(client *mongo.Client) *CourseRepo {
+func NewCourseService(client *mongo.Client, pgdb *sql.DB) *CourseRepo {
 	return &CourseRepo{
 		client: client,
 		db:     client.Database(DbName),
+		pgDb:   pgdb,
 	}
 }
 
 func (c CourseRepo) GetCourse(ctx context.Context, id string) (model.Course, error) {
 	coll := c.db.Collection(CourseCollection)
 
-	filter := bson.M{"_id": id}
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return model.Course{}, err
+	}
+
+	filter := bson.M{"_id": oid}
 
 	var course model.Course
 	if err := coll.FindOne(ctx, filter).Decode(&course); err != nil {
@@ -60,4 +72,23 @@ func (c CourseRepo) GetCourses(ctx context.Context) ([]model.Course, error) {
 	}
 
 	return courses, nil
+}
+
+func (c CourseRepo) CreateCourseTransaction(tr model.Transaction) error {
+	query := `INSERT INTO course_transactions (user_id, course_id, cost) VALUES ($1, $2, $3)`
+	if _, err := c.pgDb.Exec(query, tr.UserId, tr.CourseId, tr.Cost); err != nil {
+		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code == "23505" {
+			return model.ErrCourseAlreadyPurchased
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (c CourseRepo) CheckCourseAccess(userID int, courseID string) (bool, error) {
+	var exists bool
+	query := `SELECT EXISTS(SELECT 1 FROM course_transactions WHERE user_id=$1 AND course_id=$2)`
+	err := c.pgDb.QueryRow(query, userID, courseID).Scan(&exists)
+	return exists, err
 }

@@ -1,6 +1,9 @@
 package model
 
-import "server/internal/pkg"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"server/internal/pkg"
+)
 
 type UpdateUserRequest struct {
 	Id       int    `json:"id"`
@@ -57,4 +60,13 @@ func (u UpdateUserRequest) SetLname(str string) UpdateUserRequest {
 
 func (u UpdateUserRequest) HasLname() bool {
 	return u.Lname != ""
+}
+
+type GetCourseLimitedResponse struct {
+	Id               primitive.ObjectID `json:"id"`
+	Name             string             `json:"name"`
+	Cost             float64            `json:"cost"`
+	ModuleCount      string             `json:"module_count"`
+	ShortDescription string             `json:"short_description"`
+	ImageUrl         string             `json:"image_url"`
 }
