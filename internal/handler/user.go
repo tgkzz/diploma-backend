@@ -154,7 +154,7 @@ func (h *Handler) UpdateUser(c echo.Context) error {
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}
 
-	return nil
+	return c.NoContent(http.StatusNoContent)
 }
 
 func (h *Handler) buyCourse(c echo.Context) error {

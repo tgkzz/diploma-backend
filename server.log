@@ -73,3 +73,4 @@ INFO: 2024/05/18 20:14:46 server.go:19: server is listening on http://localhost8
 INFO: 2024/05/18 20:15:48 user.go:34: Successfully created new user
 ERROR: 2024/05/18 20:30:13 user.go:20: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
 INFO: 2024/05/18 21:35:50 server.go:19: server is listening on http://0.0.0.010000
+INFO: 2024/05/19 20:50:38 server.go:19: server is listening on http://localhost8181

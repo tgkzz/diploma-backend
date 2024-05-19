@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/redis/go-redis/v9"
+	"server/internal/config"
 	"server/internal/repository"
 	"server/internal/service/auth"
 	"server/internal/service/authadmin"
@@ -16,9 +17,9 @@ type Service struct {
 	Course     course.ICourseService
 }
 
-func NewService(repo repository.Repository, secret string, mailsenderSecret string, client *redis.Client) *Service {
+func NewService(repo repository.Repository, secret string, mailCfg config.Mailer, client *redis.Client) *Service {
 	return &Service{
-		Auth:       auth.NewAuthService(repo, secret, mailsenderSecret, client),
+		Auth:       auth.NewAuthService(repo, secret, mailCfg, client),
 		AdminAuth:  authadmin.NewAuthService(repo, secret),
 		ExpertAuth: authexpert.NewExpertService(repo, secret),
 		Course:     course.NewCourseService(repo, repo),

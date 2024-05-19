@@ -2,20 +2,19 @@ package auth
 
 import (
 	"context"
-	"errors"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/mailersend/mailersend-go"
 	"github.com/redis/go-redis/v9"
-	"net/http"
+	"server/internal/config"
 	"server/internal/model"
 	"server/internal/pkg"
+	"server/internal/pkg/mailer"
 	"server/internal/repository/auth"
 	"time"
 )
 
 type AuthService struct {
 	repo      auth.IAuthRepo
-	ms        *mailersend.Mailersend
+	ms        *mailer.Mailer
 	redis     *redis.Client
 	secretKey string
 }
@@ -30,17 +29,14 @@ type IAuthService interface {
 	SendEmailCode(email string, ctx context.Context) error
 	CheckCode(email, code string, ctx context.Context) error
 	UpdateUserByEmail(email string, req model.UpdateUserRequest) error
-	//Login(user models.User) (string, error)
 }
 
-func NewAuthService(repo auth.IAuthRepo, secretKey string, mailsenderKey string, client *redis.Client) *AuthService {
-	ms := mailersend.NewMailersend(mailsenderKey)
-
+func NewAuthService(repo auth.IAuthRepo, secretKey string, mailCfg config.Mailer, client *redis.Client) *AuthService {
 	return &AuthService{
 		redis:     client,
 		repo:      repo,
 		secretKey: secretKey,
-		ms:        ms,
+		ms:        mailer.NewMailer(mailCfg),
 	}
 }
 
@@ -130,7 +126,7 @@ func (a AuthService) SendEmailCode(email string, ctx context.Context) error {
 		return err
 	}
 
-	if err := a.sendEmail(email, code, ctx); err != nil {
+	if err := a.ms.SendMessage(email, code); err != nil {
 		return err
 	}
 
@@ -145,40 +141,6 @@ func (a AuthService) CheckCode(email, code string, ctx context.Context) error {
 
 	if stringCmd.Val() != code {
 		return model.ErrIncorrectCode
-	}
-
-	return nil
-}
-
-func (a AuthService) sendEmail(email, text string, ctx context.Context) error {
-	from := mailersend.From{
-		Name:  "Kamal",
-		Email: "foreverwantlive@gmail.com",
-	}
-
-	to := []mailersend.Recipient{
-		{
-			Name:  "Client",
-			Email: email,
-		},
-	}
-
-	//sendAt := time.Now().Add(time.Second * 30).Unix()
-
-	msg := a.ms.Email.NewMessage()
-
-	msg.SetFrom(from)
-	msg.SetRecipients(to)
-	msg.SetSubject(VerificationCodeSubject)
-	msg.SetText(text)
-
-	res, err := a.ms.Email.Send(ctx, msg)
-	if err != nil {
-		return err
-	}
-
-	if res.StatusCode >= http.StatusBadRequest {
-		return errors.New("mailsender gave an error")
 	}
 
 	return nil

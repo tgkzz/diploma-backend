@@ -13,6 +13,7 @@ type Config struct {
 	DB            DB
 	Redis         Redis
 	Mongo         Mongo
+	Mailer        Mailer
 }
 
 type DB struct {
@@ -28,6 +29,13 @@ type Redis struct {
 	Addr     string `env:"REDIS_ADDR"`
 	Username string `env:"REDIS_USERNAME"`
 	Password string `env:"REDIS_PASSWORD"`
+}
+
+type Mailer struct {
+	From     string `env:"MAIL_FROM"`
+	Password string `env:"MAIL_PASSWORD"`
+	SmtpHost string `env:"SMTP_HOST"`
+	SmtpPort string `env:"SMTP_PORT"`
 }
 
 func LoadConfig(path string) (Config, error) {
@@ -52,6 +60,12 @@ func LoadConfig(path string) (Config, error) {
 			Addr:     os.Getenv("REDIS_ADDR"),
 			Username: os.Getenv("REDIS_USERNAME"),
 			Password: os.Getenv("REDIS_PASSWORD"),
+		},
+		Mailer: Mailer{
+			From:     os.Getenv("MAIL_FROM"),
+			Password: os.Getenv("MAIL_PASSWORD"),
+			SmtpHost: os.Getenv("SMTP_HOST"),
+			SmtpPort: os.Getenv("SMTP_PORT"),
 		},
 	}
 

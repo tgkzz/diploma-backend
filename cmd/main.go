@@ -50,7 +50,7 @@ func main() {
 
 	r := repository.NewRepository(db, mongoClient)
 
-	s := service.NewService(*r, cfg.SecretKey, cfg.MailSenderKey, redisCli)
+	s := service.NewService(*r, cfg.SecretKey, cfg.Mailer, redisCli)
 
 	h := handler.NewHandler(s, infoLog, errLog, cfg.SecretKey)
 
