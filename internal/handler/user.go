@@ -63,6 +63,7 @@ func (h *Handler) login(c echo.Context) error {
 		"message": "Successfully logged in",
 		"token":   token,
 		"fname":   user.FirstName,
+		"lname":   user.LastName,
 		"email":   user.Email,
 	}
 
