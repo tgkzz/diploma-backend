@@ -120,6 +120,9 @@ func (h *Handler) checkEmailCode(c echo.Context) error {
 
 	if err := h.service.Auth.CheckCode(req.Email, req.Code, c.Request().Context()); err != nil {
 		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrIncorrectCode) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}
 
