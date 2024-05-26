@@ -21,7 +21,8 @@ type Expert struct {
 	Email       string  `json:"email"`
 	Cost        float64 `json:"cost"`
 	Password    string  `json:"password"`
-	Description string
+	Description string  `json:"description"`
+	ImageLink   string  `json:"imageLink"`
 }
 
 type SendEmailCodeRequest struct {

@@ -23,9 +23,9 @@ func NewExpertRepo(db *sql.DB) *ExpertRepo {
 }
 
 func (e ExpertRepo) CreateExpert(expert model.Expert) error {
-	query := `INSERT INTO expert (fname, lname, email, cost, password) VALUES ($1, $2, $3, $4, $5)`
+	query := `INSERT INTO experts (fname, lname, email, cost, password, description, imageLink) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
-	_, err := e.DB.Exec(query, expert.FirstName, expert.LastName, expert.Email, expert.Cost, expert.Password)
+	_, err := e.DB.Exec(query, expert.FirstName, expert.LastName, expert.Email, expert.Cost, expert.Password, expert.Description, expert.ImageLink)
 
 	return err
 
@@ -34,7 +34,7 @@ func (e ExpertRepo) CreateExpert(expert model.Expert) error {
 func (e ExpertRepo) GetAllExpert() ([]model.Expert, error) {
 	var experts []model.Expert
 
-	query := `SELECT id, fname, lname, email, cost, description FROM expert`
+	query := `SELECT id, fname, lname, email, cost, description, imageLink FROM experts`
 	rows, err := e.DB.Query(query)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (e ExpertRepo) GetAllExpert() ([]model.Expert, error) {
 
 	for rows.Next() {
 		var expert model.Expert
-		err := rows.Scan(&expert.Id, &expert.FirstName, &expert.LastName, &expert.Email, &expert.Cost, &expert.Description)
+		err := rows.Scan(&expert.Id, &expert.FirstName, &expert.LastName, &expert.Email, &expert.Cost, &expert.Description, &expert.ImageLink)
 		if err != nil {
 			return nil, err
 		}
@@ -58,7 +58,7 @@ func (e ExpertRepo) GetAllExpert() ([]model.Expert, error) {
 }
 
 func (e ExpertRepo) DeleteExpertByEmail(email string) error {
-	query := `DELETE FROM expert WHERE email = $1`
+	query := `DELETE FROM experts WHERE email = $1`
 
 	_, err := e.DB.Exec(query, email)
 
@@ -66,11 +66,11 @@ func (e ExpertRepo) DeleteExpertByEmail(email string) error {
 }
 
 func (e ExpertRepo) GetExpertByEmail(email string) (model.Expert, error) {
-	query := `SELECT id, fname, lname, email, cost, password FROM expert WHERE email = $1`
+	query := `SELECT id, fname, lname, email, cost, password, description, imageLink FROM experts WHERE email = $1`
 
 	var expert model.Expert
 
-	err := e.DB.QueryRow(query, email).Scan(&expert.Id, &expert.FirstName, &expert.LastName, &expert.Email, &expert.Cost, &expert.Password)
+	err := e.DB.QueryRow(query, email).Scan(&expert.Id, &expert.FirstName, &expert.LastName, &expert.Email, &expert.Cost, &expert.Password, &expert.Description, &expert.ImageLink)
 
 	return expert, err
 }

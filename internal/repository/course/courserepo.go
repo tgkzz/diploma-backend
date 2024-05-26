@@ -26,6 +26,8 @@ type ICourseRepo interface {
 	GetCourses(ctx context.Context) ([]model.Course, error)
 	CreateCourseTransaction(tr model.Transaction) error
 	CheckCourseAccess(userID int, courseID string) (bool, error)
+	GetUserCourses(userId int) ([]string, error)
+	GetCoursesContent(ctx context.Context, courseIds []string) ([]model.Course, error)
 }
 
 func NewCourseService(client *mongo.Client, pgdb *sql.DB) *CourseRepo {
@@ -86,9 +88,59 @@ func (c CourseRepo) CreateCourseTransaction(tr model.Transaction) error {
 	return nil
 }
 
+func (c CourseRepo) GetCoursesContent(ctx context.Context, courseIds []string) ([]model.Course, error) {
+	var courses []model.Course
+	var objIDs []primitive.ObjectID
+	coll := c.db.Collection("courses")
+
+	for _, id := range courseIds {
+		objID, err := primitive.ObjectIDFromHex(id)
+		if err != nil {
+			return nil, err
+		}
+		objIDs = append(objIDs, objID)
+	}
+
+	filter := bson.M{"_id": bson.M{"$in": objIDs}}
+	cursor, err := coll.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(ctx, &courses); err != nil {
+		return nil, err
+	}
+
+	return courses, nil
+}
+
 func (c CourseRepo) CheckCourseAccess(userID int, courseID string) (bool, error) {
 	var exists bool
 	query := `SELECT EXISTS(SELECT 1 FROM course_transactions WHERE user_id=$1 AND course_id=$2)`
 	err := c.pgDb.QueryRow(query, userID, courseID).Scan(&exists)
 	return exists, err
+}
+
+func (c CourseRepo) GetUserCourses(userId int) ([]string, error) {
+	query := `SELECT course_id FROM course_transactions WHERE user_id = $1`
+
+	rows, err := c.pgDb.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var courses []string
+	for rows.Next() {
+		var courseID string
+		if err := rows.Scan(&courseID); err != nil {
+			return nil, err
+		}
+		courses = append(courses, courseID)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return courses, nil
 }

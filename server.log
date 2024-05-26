@@ -74,3 +74,19 @@ INFO: 2024/05/18 20:15:48 user.go:34: Successfully created new user
 ERROR: 2024/05/18 20:30:13 user.go:20: pq: повторяющееся значение ключа нарушает ограничение уникальности "users_email_key"
 INFO: 2024/05/18 21:35:50 server.go:19: server is listening on http://0.0.0.010000
 INFO: 2024/05/19 20:50:38 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/19 21:02:09 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/19 21:02:40 user.go:122: incorrect code
+INFO: 2024/05/26 20:29:39 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/26 20:36:28 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/26 20:41:06 expert.go:26: Successfully created new expert
+INFO: 2024/05/26 20:46:32 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/26 20:46:37 expert.go:18: pq: INSERT содержит больше целевых столбцов, чем выражений
+INFO: 2024/05/26 20:47:28 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/26 20:47:33 expert.go:18: pq: INSERT содержит больше целевых столбцов, чем выражений
+INFO: 2024/05/26 20:48:09 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/26 20:50:03 server.go:19: server is listening on http://localhost8181
+ERROR: 2024/05/26 20:50:06 expert.go:18: pq: got 5 parameters but the statement requires 7
+ERROR: 2024/05/26 20:51:45 expert.go:18: pq: got 5 parameters but the statement requires 7
+INFO: 2024/05/26 20:53:24 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/26 20:53:30 expert.go:26: Successfully created new expert
+INFO: 2024/05/26 20:53:50 expert.go:26: Successfully created new expert

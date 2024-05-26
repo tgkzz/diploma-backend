@@ -19,6 +19,7 @@ type ICourseService interface {
 	GetCourseLimited(ctx context.Context, id string) (model.GetCourseLimitedResponse, error)
 	BuyCourse(ctx context.Context, courseId, email string) error
 	CheckCourseAccess(userId int, courseId string) (bool, error)
+	GetUserCourses(ctx context.Context, email string) ([]model.Course, error)
 }
 
 func NewCourseService(courseRepo course.ICourseRepo, authRepo auth.IAuthRepo) *CourseService {
@@ -85,4 +86,23 @@ func (c CourseService) BuyCourse(ctx context.Context, courseId, email string) er
 
 func (c CourseService) CheckCourseAccess(userId int, courseId string) (bool, error) {
 	return c.courseRepo.CheckCourseAccess(userId, courseId)
+}
+
+func (c CourseService) GetUserCourses(ctx context.Context, email string) ([]model.Course, error) {
+	user, err := c.authRepo.GetUserByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	userCourses, err := c.courseRepo.GetUserCourses(user.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := c.courseRepo.GetCoursesContent(ctx, userCourses)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

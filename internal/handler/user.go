@@ -195,3 +195,20 @@ func (h *Handler) getUserCourse(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) getUserCourses(c echo.Context) error {
+	email := c.Get("email")
+
+	res, err := h.service.Course.GetUserCourses(c.Request().Context(), email.(string))
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status": "success",
+		"course": res,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}

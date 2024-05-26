@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS experts (
     email VARCHAR(255) UNIQUE,
     cost NUMERIC(10, 2),
     password VARCHAR(255),
+    imageLink TEXT,
     description TEXT
 );
 

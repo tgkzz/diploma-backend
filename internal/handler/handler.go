@@ -56,6 +56,8 @@ func (h *Handler) Routes() *echo.Echo {
 		user.DELETE("", h.deleteUser)
 		user.PUT("", h.UpdateUser)
 
+		user.GET("/get-courses", h.getUserCourses)
+
 		user.POST("/buy-course/:course_id", h.buyCourse)
 		userCourse := user.Group("")
 		userCourse.Use(h.courseAccessMiddleware)
