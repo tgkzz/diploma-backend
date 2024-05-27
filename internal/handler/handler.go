@@ -85,5 +85,16 @@ func (h *Handler) Routes() *echo.Echo {
 		expertApi.GET("/getAllExperts", h.getAllExperts)
 	}
 
+	chatApi := e.Group("/chat")
+	{
+		chatApi.GET("/ws", h.handleConnections)
+	}
+
+	go func() {
+		if err := h.HandleMessages(); err != nil {
+			return
+		}
+	}()
+
 	return e
 }

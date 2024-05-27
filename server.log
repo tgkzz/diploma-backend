@@ -90,3 +90,7 @@ ERROR: 2024/05/26 20:51:45 expert.go:18: pq: got 5 parameters but the statement 
 INFO: 2024/05/26 20:53:24 server.go:19: server is listening on http://localhost8181
 INFO: 2024/05/26 20:53:30 expert.go:26: Successfully created new expert
 INFO: 2024/05/26 20:53:50 expert.go:26: Successfully created new expert
+ERROR: 2024/05/27 11:12:08 main.go:42: NewMongoDB server selection error: server selection timeout, current topology: { Type: ReplicaSetNoPrimary, Servers: [{ Addr: ac-4jlvjjr-shard-00-01.qjl2qms.mongodb.net:27017, Type: Unknown, Last error: read tcp 10.101.61.222:51953->18.197.232.31:27017: wsarecv: An existing connection was forcibly closed by the remote host. }, { Addr: ac-4jlvjjr-shard-00-02.qjl2qms.mongodb.net:27017, Type: Unknown, Last error: read tcp 10.101.61.222:51955->35.158.229.71:27017: wsarecv: An existing connection was forcibly closed by the remote host. }, { Addr: ac-4jlvjjr-shard-00-00.qjl2qms.mongodb.net:27017, Type: Unknown, Last error: read tcp 10.101.61.222:51954->18.197.230.4:27017: wsarecv: An existing connection was forcibly closed by the remote host. }, ] }
+INFO: 2024/05/27 11:13:04 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/27 11:16:41 server.go:19: server is listening on http://localhost8181
+INFO: 2024/05/27 11:18:22 server.go:19: server is listening on http://localhost8181
