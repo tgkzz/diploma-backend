@@ -199,7 +199,9 @@ func (h *Handler) getUserCourse(c echo.Context) error {
 func (h *Handler) getUserCourses(c echo.Context) error {
 	email := c.Get("email")
 
-	res, err := h.service.Course.GetUserCourses(c.Request().Context(), email.(string))
+	_ = email
+
+	res, err := h.service.Course.GetCoursesLimited(c.Request().Context())
 	if err != nil {
 		h.errorLogger.Print(err)
 		return ErrorHandler(c, err, http.StatusInternalServerError)
