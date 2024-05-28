@@ -127,8 +127,7 @@ func (c CourseService) GetUsersBoughtCourses(ctx context.Context, email string) 
 			return nil, errors.New("err getting access")
 		}
 		if !hasAccess {
-			return nil, errors.New("course access if forbidden")
-			//	return c.JSON(http.StatusForbidden, echo.Map{"error": "Course access if forbidden"})
+			continue
 		}
 		res = append(res, ccrs)
 	}
