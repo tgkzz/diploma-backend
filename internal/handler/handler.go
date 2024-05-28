@@ -64,6 +64,11 @@ func (h *Handler) Routes() *echo.Echo {
 		{
 			userCourse.GET("/:course_id", h.getUserCourse)
 		}
+
+		meeting := e.Group("/meeting")
+		{
+			meeting.POST("/make-appointment", h.makeMeeting)
+		}
 	}
 
 	course := e.Group("/course")

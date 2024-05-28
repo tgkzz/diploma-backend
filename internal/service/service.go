@@ -8,6 +8,7 @@ import (
 	"server/internal/service/authadmin"
 	"server/internal/service/authexpert"
 	"server/internal/service/course"
+	"server/internal/service/meeting"
 )
 
 type Service struct {
@@ -15,6 +16,7 @@ type Service struct {
 	AdminAuth  authadmin.IAuthAdminService
 	ExpertAuth authexpert.IExpertService
 	Course     course.ICourseService
+	Meeting    meeting.IMeetingService
 }
 
 func NewService(repo repository.Repository, secret string, mailCfg config.Mailer, client *redis.Client) *Service {
@@ -23,5 +25,6 @@ func NewService(repo repository.Repository, secret string, mailCfg config.Mailer
 		AdminAuth:  authadmin.NewAuthService(repo, secret),
 		ExpertAuth: authexpert.NewExpertService(repo, secret),
 		Course:     course.NewCourseService(repo, repo),
+		Meeting:    meeting.NewMeetingService(repo, repo, repo),
 	}
 }

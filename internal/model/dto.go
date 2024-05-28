@@ -70,3 +70,10 @@ type GetCourseLimitedResponse struct {
 	ShortDescription string             `json:"short_description"`
 	ImageUrl         string             `json:"image_url"`
 }
+
+type MakeAppointmentRequest struct {
+	UserEmail   string   `json:"userEmail"`
+	ExpertEmail string   `json:"expertEmail"`
+	TimeStart   UnixTime `json:"timeStart"`
+	TimeEnd     UnixTime `json:"timeEnd"`
+}

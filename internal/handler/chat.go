@@ -8,6 +8,13 @@ import (
 
 var Clients = make(map[*websocket.Conn]bool)
 var Broadcast = make(chan Message)
+var Rooms = make(map[string]*Room)
+
+type Room struct {
+	RoomID    string
+	Clients   map[*websocket.Conn]bool
+	Broadcast chan Message
+}
 
 type Message struct {
 	Username string `json:"username"`
@@ -26,14 +33,17 @@ func (h *Handler) handleConnections(c echo.Context) error {
 		h.errorLogger.Print(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	defer conn.Close()
+	defer func(conn *websocket.Conn) {
+		if err := conn.Close(); err != nil {
+			return
+		}
+	}(conn)
 
 	Clients[conn] = true
 
 	for {
 		var msg Message
-		err := conn.ReadJSON(&msg)
-		if err != nil {
+		if err := conn.ReadJSON(&msg); err != nil {
 			h.errorLogger.Print(err)
 			delete(Clients, conn)
 			return c.JSON(http.StatusInternalServerError, err.Error())
