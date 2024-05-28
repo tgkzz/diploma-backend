@@ -2,6 +2,7 @@ package course
 
 import (
 	"context"
+	"errors"
 	"server/internal/model"
 	"server/internal/repository/auth"
 	"server/internal/repository/course"
@@ -120,12 +121,16 @@ func (c CourseService) GetUsersBoughtCourses(ctx context.Context, email string) 
 	}
 
 	var res []model.Course
-	for _, course := range courses {
-		if ok, err := c.courseRepo.CheckCourseAccess(user.Id, course.ID.String()); err != nil || ok == false {
-			continue
-		} else {
-			res = append(res, course)
+	for _, ccrs := range courses {
+		hasAccess, err := c.CheckCourseAccess(user.Id, ccrs.ID.Hex())
+		if err != nil {
+			return nil, errors.New("err getting access")
 		}
+		if !hasAccess {
+			return nil, errors.New("course access if forbidden")
+			//	return c.JSON(http.StatusForbidden, echo.Map{"error": "Course access if forbidden"})
+		}
+		res = append(res, ccrs)
 	}
 
 	var resp []model.GetCourseLimitedResponse
