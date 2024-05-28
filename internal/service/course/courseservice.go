@@ -20,6 +20,7 @@ type ICourseService interface {
 	BuyCourse(ctx context.Context, courseId, email string) error
 	CheckCourseAccess(userId int, courseId string) (bool, error)
 	GetUserCourses(ctx context.Context, email string) ([]model.Course, error)
+	GetUsersBoughtCourses(ctx context.Context, email string) ([]model.Course, error)
 }
 
 func NewCourseService(courseRepo course.ICourseRepo, authRepo auth.IAuthRepo) *CourseService {
@@ -102,6 +103,29 @@ func (c CourseService) GetUserCourses(ctx context.Context, email string) ([]mode
 	res, err := c.courseRepo.GetCoursesContent(ctx, userCourses)
 	if err != nil {
 		return nil, err
+	}
+
+	return res, nil
+}
+
+func (c CourseService) GetUsersBoughtCourses(ctx context.Context, email string) ([]model.Course, error) {
+	courses, err := c.courseRepo.GetCourses(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := c.authRepo.GetUserByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	var res []model.Course
+	for _, course := range courses {
+		if ok, err := c.courseRepo.CheckCourseAccess(user.Id, course.ID.String()); err != nil || ok != false {
+			continue
+		} else {
+			res = append(res, course)
+		}
 	}
 
 	return res, nil
