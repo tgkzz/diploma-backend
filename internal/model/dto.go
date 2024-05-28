@@ -72,8 +72,8 @@ type GetCourseLimitedResponse struct {
 }
 
 type MakeAppointmentRequest struct {
-	UserEmail   string   `json:"userEmail"`
-	ExpertEmail string   `json:"expertEmail"`
-	TimeStart   UnixTime `json:"timeStart"`
-	TimeEnd     UnixTime `json:"timeEnd"`
+	UserEmail   string `json:"userEmail"`
+	ExpertEmail string `json:"expertEmail"`
+	TimeStart   string `json:"timeStart"`
+	TimeEnd     string `json:"timeEnd"`
 }

@@ -4,17 +4,17 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"server/internal/model"
 )
-
-var Clients = make(map[*websocket.Conn]bool)
-var Broadcast = make(chan Message)
-var Rooms = make(map[string]*Room)
 
 type Room struct {
 	RoomID    string
 	Clients   map[*websocket.Conn]bool
 	Broadcast chan Message
+	ErrChan   chan error
 }
+
+var Rooms = make(map[string]*Room)
 
 type Message struct {
 	Username string `json:"username"`
@@ -28,7 +28,8 @@ var Upgrader = websocket.Upgrader{
 }
 
 func (h *Handler) handleConnections(c echo.Context) error {
-	conn, err := Upgrader.Upgrade(c.Response(), c.Request(), c.Response().Header())
+	roomID := c.Param("room_id")
+	conn, err := Upgrader.Upgrade(c.Response(), c.Request(), nil)
 	if err != nil {
 		h.errorLogger.Print(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
@@ -39,31 +40,54 @@ func (h *Handler) handleConnections(c echo.Context) error {
 		}
 	}(conn)
 
-	Clients[conn] = true
+	meeting, err := h.service.Meeting.GetMeetingByRoomId(roomID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, model.ErrNoMeeting)
+	}
+
+	if Rooms[roomID] == nil {
+		Rooms[roomID] = &Room{
+			RoomID:    meeting.RoomId,
+			Clients:   make(map[*websocket.Conn]bool),
+			Broadcast: make(chan Message),
+			ErrChan:   make(chan error),
+		}
+		go h.HandleMessages(meeting.RoomId, Rooms[roomID].ErrChan)
+	}
+
+	room := Rooms[roomID]
+	room.Clients[conn] = true
 
 	for {
 		var msg Message
 		if err := conn.ReadJSON(&msg); err != nil {
-			h.errorLogger.Print(err)
-			delete(Clients, conn)
+			h.errorLogger.Printf("Error reading JSON: %v", err)
+			delete(room.Clients, conn)
+			if len(room.Clients) == 0 {
+				close(room.Broadcast)
+				delete(Rooms, roomID)
+			}
 			return c.JSON(http.StatusInternalServerError, err.Error())
 		}
 
-		Broadcast <- msg
+		h.infoLogger.Printf("Received message: %v", msg)
+		room.Broadcast <- msg
 	}
 }
 
-func (h *Handler) HandleMessages() error {
-
-	for {
-		msg := <-Broadcast
-
-		for client := range Clients {
-			err := client.WriteJSON(msg)
-			if err != nil {
-				h.errorLogger.Print(err)
+func (h *Handler) HandleMessages(roomID string, errChan chan error) {
+	room := Rooms[roomID]
+	for msg := range room.Broadcast {
+		for client := range room.Clients {
+			if err := client.WriteJSON(msg); err != nil {
 				client.Close()
-				delete(Clients, client)
+				delete(room.Clients, client)
+				if len(room.Clients) == 0 {
+					close(room.Broadcast)
+					delete(Rooms, roomID)
+				}
+				errChan <- err
+				return
 			}
 		}
 	}

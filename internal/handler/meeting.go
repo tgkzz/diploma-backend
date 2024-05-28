@@ -30,4 +30,15 @@ func (h *Handler) makeMeeting(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-// TODO: update table in postgres
+func (h *Handler) GetMeetingByRoomId(c echo.Context) error {
+
+	roomId := c.QueryParam("room_id")
+
+	meet, err := h.service.Meeting.GetMeetingByRoomId(roomId)
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.JSON(http.StatusOK, meet)
+}

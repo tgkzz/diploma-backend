@@ -10,16 +10,20 @@ type UnixTime struct {
 }
 
 func (t *UnixTime) UnmarshalJSON(b []byte) error {
-	var unixTime int64
-	if err := json.Unmarshal(b, &unixTime); err != nil {
+	var isoTime string
+	if err := json.Unmarshal(b, &isoTime); err != nil {
 		return err
 	}
-	t.Time = time.Unix(unixTime, 0)
+	parsedTime, err := time.Parse(time.RFC3339, isoTime)
+	if err != nil {
+		return err
+	}
+	t.Time = parsedTime
 	return nil
 }
 
 func (t UnixTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.Unix())
+	return json.Marshal(t.Format(time.RFC3339))
 }
 
 type QuoteMsg struct {

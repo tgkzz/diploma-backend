@@ -6,6 +6,7 @@ import (
 	"server/internal/repository/auth"
 	"server/internal/repository/authexpert"
 	"server/internal/repository/meeting"
+	"time"
 )
 
 type MeetingService struct {
@@ -16,6 +17,7 @@ type MeetingService struct {
 
 type IMeetingService interface {
 	CreateMeeting(request model.MakeAppointmentRequest, userEmail string) (string, error)
+	GetMeetingByRoomId(roomId string) (model.Meeting, error)
 }
 
 func NewMeetingService(repo meeting.IMeetingRepo, authRepo auth.IAuthRepo, expertRepo authexpert.IExpertRepo) *MeetingService {
@@ -36,11 +38,19 @@ func (m *MeetingService) CreateMeeting(request model.MakeAppointmentRequest, use
 	req := model.Meeting{
 		UserId:      user.Id,
 		ExpertId:    expert.Id,
-		TimeStart:   request.TimeStart,
-		TimeEnd:     request.TimeEnd,
 		TotalCost:   expert.Cost,
 		MeetingLink: "",
 		RoomId:      uuid.New().String(),
+	}
+
+	req.TimeStart.Time, err = time.Parse(time.RFC3339, request.TimeStart)
+	if err != nil {
+		return "", err
+	}
+
+	req.TimeEnd.Time, err = time.Parse(time.RFC3339, request.TimeEnd)
+	if err != nil {
+		return "", err
 	}
 
 	if err := m.meetingRepo.CreateMeeting(req); err != nil {
@@ -48,4 +58,8 @@ func (m *MeetingService) CreateMeeting(request model.MakeAppointmentRequest, use
 	}
 
 	return req.RoomId, nil
+}
+
+func (m *MeetingService) GetMeetingByRoomId(roomId string) (model.Meeting, error) {
+	return m.meetingRepo.GetMeetingByRoomId(roomId)
 }

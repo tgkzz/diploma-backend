@@ -65,9 +65,10 @@ func (h *Handler) Routes() *echo.Echo {
 			userCourse.GET("/:course_id", h.getUserCourse)
 		}
 
-		meeting := e.Group("/meeting")
+		meeting := user.Group("/meeting")
 		{
 			meeting.POST("/make-appointment", h.makeMeeting)
+			meeting.GET("/by-room-id", h.GetMeetingByRoomId)
 		}
 	}
 
@@ -88,18 +89,14 @@ func (h *Handler) Routes() *echo.Echo {
 		expertApi.POST("/register", h.registerExpert)
 		expertApi.POST("/login", h.loginExpert)
 		expertApi.GET("/getAllExperts", h.getAllExperts)
+
+		expertApi.GET("/by-room-id", h.GetMeetingByRoomId)
 	}
 
 	chatApi := e.Group("/chat")
 	{
-		chatApi.GET("/ws", h.handleConnections)
+		chatApi.GET("/ws/:room_id", h.handleConnections)
 	}
-
-	go func() {
-		if err := h.HandleMessages(); err != nil {
-			return
-		}
-	}()
 
 	return e
 }
