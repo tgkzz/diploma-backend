@@ -62,7 +62,7 @@ func NewMongoDB(cfg config.Mongo) (*mongo.Client, error) {
 		return nil, err
 	}
 
-	if err := client.Database("admin").RunCommand(ctx, bson.D{{"ping", 1}}).Err(); err != nil {
+	if err := client.Database("admin").RunCommand(ctx, bson.D{{Key: "ping", Value: 1}}).Err(); err != nil {
 		return nil, err
 	}
 
