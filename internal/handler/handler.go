@@ -41,6 +41,11 @@ func (h *Handler) Routes() *echo.Echo {
 		return e.JSON(http.StatusOK, "ping")
 	})
 
+	api := e.Group("/api")
+	{
+		api.POST("/send-msg", h.sendMsg)
+	}
+
 	authApi := e.Group("/auth")
 	{
 		authApi.POST("/send-email", h.sendEmailCode)

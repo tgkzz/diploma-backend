@@ -30,6 +30,7 @@ type IAuthService interface {
 	SendEmailCode(email string, ctx context.Context) error
 	CheckCode(email, code string, ctx context.Context) error
 	UpdateUserByEmail(email string, req model.UpdateUserRequest) error
+	SendMsg(to, msg string) error
 }
 
 func NewAuthService(repo auth.IAuthRepo, secretKey string, mailCfg config.Mailer, client *redis.Client) *AuthService {
@@ -168,4 +169,8 @@ func (a AuthService) UpdateUserByEmail(email string, req model.UpdateUserRequest
 	}
 
 	return nil
+}
+
+func (a AuthService) SendMsg(to, msg string) error {
+	return a.ms.SendMessage(to, msg)
 }
