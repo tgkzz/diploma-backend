@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/redis/go-redis/v9"
 	"server/internal/config"
@@ -126,7 +127,9 @@ func (a AuthService) SendEmailCode(email string, ctx context.Context) error {
 		return err
 	}
 
-	if err := a.ms.SendMessage(email, code); err != nil {
+	msg := fmt.Sprintf("Ваш код подтверждения: %s, если вы не должны были получать данный код, проигнорируйте данное сообщение", code)
+
+	if err := a.ms.SendMessage(email, msg); err != nil {
 		return err
 	}
 
