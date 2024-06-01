@@ -15,4 +15,5 @@ var (
 	ErrCourseAlreadyPurchased      error = errors.New("course already purchased")
 	ErrEmailIsAlreadyUser          error = errors.New("email is already used")
 	ErrNoMeeting                   error = errors.New("no room meeting")
+	ErrTimeInPast                  error = errors.New("time cannot be in past")
 )

@@ -1,12 +1,13 @@
 package handler
 
 import (
+	"errors"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"server/internal/model"
 )
 
-func (h *Handler) makeMeeting(c echo.Context) error {
+func (h *Handler) makeAppointment(c echo.Context) error {
 	userEmail := c.Get("email")
 
 	var req model.MakeAppointmentRequest
@@ -15,16 +16,17 @@ func (h *Handler) makeMeeting(c echo.Context) error {
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}
 
-	resp, err := h.service.Meeting.CreateMeeting(req, userEmail.(string))
-	if err != nil {
+	if err := h.service.Meeting.PlaceAppointment(req, userEmail.(string)); err != nil {
 		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrTimeInPast) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
 		return ErrorHandler(c, err, http.StatusInternalServerError)
 	}
 
 	response := map[string]interface{}{
 		"status":  "success",
 		"message": "Successfully created new meeting",
-		"roomId":  resp,
 	}
 
 	return c.JSON(http.StatusOK, response)

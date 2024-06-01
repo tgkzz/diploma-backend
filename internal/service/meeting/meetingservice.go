@@ -1,12 +1,20 @@
 package meeting
 
 import (
+	"context"
+	"fmt"
 	"github.com/google/uuid"
 	"server/internal/model"
 	"server/internal/repository/auth"
 	"server/internal/repository/authexpert"
 	"server/internal/repository/meeting"
 	"time"
+)
+
+const (
+	AVAILABLE = "available"
+	BOOKED    = "booked"
+	CONDUCTED = "conducted"
 )
 
 type MeetingService struct {
@@ -18,6 +26,10 @@ type MeetingService struct {
 type IMeetingService interface {
 	CreateMeeting(request model.MakeAppointmentRequest, userEmail string) (string, error)
 	GetMeetingByRoomId(roomId string) (model.Meeting, error)
+	CreateMeetByExpert(ctx context.Context, req model.MakeAppointmentRequest) (string, error)
+	PlaceAppointment(req model.MakeAppointmentRequest, userEmail string) error
+	GetExpertMeets(email string) ([]model.Meeting, error)
+	GetUserMeets(email string) ([]model.Meeting, error)
 }
 
 func NewMeetingService(repo meeting.IMeetingRepo, authRepo auth.IAuthRepo, expertRepo authexpert.IExpertRepo) *MeetingService {
@@ -62,4 +74,95 @@ func (m *MeetingService) CreateMeeting(request model.MakeAppointmentRequest, use
 
 func (m *MeetingService) GetMeetingByRoomId(roomId string) (model.Meeting, error) {
 	return m.meetingRepo.GetMeetingByRoomId(roomId)
+}
+
+func (m *MeetingService) CreateMeetByExpert(ctx context.Context, req model.MakeAppointmentRequest) (string, error) {
+	expert, err := m.expertRepo.GetExpertByEmail(req.ExpertEmail)
+	if err != nil {
+		return "", err
+	}
+
+	var timeStart model.UnixTime
+	err = timeStart.UnmarshalJSON([]byte(fmt.Sprintf("\"%s\"", req.TimeStart)))
+	if err != nil {
+		return "", err
+	}
+
+	var timeEnd model.UnixTime
+	err = timeEnd.UnmarshalJSON([]byte(fmt.Sprintf("\"%s\"", req.TimeEnd)))
+	if err != nil {
+		return "", err
+	}
+
+	if timeStart.Time.Before(time.Now()) || timeEnd.Time.Before(time.Now()) || timeEnd.Time.Before(timeStart.Time) {
+		return "", model.ErrTimeInPast
+	}
+
+	roomId := uuid.New().String()
+	if err := m.meetingRepo.CreateMeeting(model.Meeting{
+		ExpertId:    expert.Id,
+		TotalCost:   expert.Cost,
+		MeetingLink: "",
+		RoomId:      roomId,
+		TimeStart:   timeStart,
+		TimeEnd:     timeEnd,
+		Status:      AVAILABLE,
+	}); err != nil {
+		return "", err
+	}
+
+	return roomId, nil
+}
+
+func (m *MeetingService) PlaceAppointment(req model.MakeAppointmentRequest, userEmail string) error {
+	user, err := m.userRepo.GetUserByEmail(userEmail)
+	if err != nil {
+		return err
+	}
+
+	meet, err := m.meetingRepo.GetMeetingByRoomId(req.RoomId)
+	if err != nil {
+		return err
+	}
+
+	if meet.TimeStart.Time.Before(time.Now()) {
+		return model.ErrTimeInPast
+	}
+
+	if err := m.meetingRepo.UpdateMeeting(model.Meeting{
+		UserId: user.Id,
+		Status: BOOKED,
+	}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MeetingService) GetExpertMeets(email string) ([]model.Meeting, error) {
+	expert, err := m.expertRepo.GetExpertByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := m.meetingRepo.GetMeetingsByExpertId(expert.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (m *MeetingService) GetUserMeets(email string) ([]model.Meeting, error) {
+	user, err := m.userRepo.GetUserByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := m.meetingRepo.GetMeetingsByUserId(user.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }

@@ -212,3 +212,15 @@ func (h *Handler) getUserCourses(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) getUserMeets(c echo.Context) error {
+	email := c.Get("email")
+
+	res, err := h.service.Meeting.GetUserMeets(email.(string))
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.JSON(http.StatusOK, res)
+}

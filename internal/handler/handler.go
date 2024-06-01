@@ -57,6 +57,7 @@ func (h *Handler) Routes() *echo.Echo {
 		user.PUT("", h.UpdateUser)
 
 		user.GET("/get-courses", h.getUserCourses)
+		user.GET("/get-meets", h.getUserMeets)
 
 		user.POST("/buy-course/:course_id", h.buyCourse)
 		userCourse := user.Group("")
@@ -67,7 +68,7 @@ func (h *Handler) Routes() *echo.Echo {
 
 		meeting := user.Group("/meeting")
 		{
-			meeting.POST("/make-appointment", h.makeMeeting)
+			meeting.POST("/make-appointment", h.makeAppointment)
 			meeting.GET("/by-room-id", h.GetMeetingByRoomId)
 		}
 	}
@@ -86,9 +87,17 @@ func (h *Handler) Routes() *echo.Echo {
 
 	expertApi := e.Group("/expert")
 	{
+		expertApi.GET("/getAllExperts", h.getAllExperts)
+
 		expertApi.POST("/register", h.registerExpert)
 		expertApi.POST("/login", h.loginExpert)
-		expertApi.GET("/getAllExperts", h.getAllExperts)
+
+		expertAction := expertApi.Group("")
+		expertAction.Use(h.expertJwtMiddleware)
+		{
+			expertApi.POST("/create/meet", h.createMeet)
+			expertApi.GET("/get-meets", h.GetExpertMeets)
+		}
 
 		expertApi.GET("/by-room-id", h.GetMeetingByRoomId)
 	}

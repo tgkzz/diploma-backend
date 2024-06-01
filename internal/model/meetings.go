@@ -9,4 +9,5 @@ type Meeting struct {
 	TotalCost   float64  `json:"totalCost"`
 	MeetingLink string   `json:"meetingLink"`
 	RoomId      string   `json:"roomId"`
+	Status      string   `json:"status"`
 }

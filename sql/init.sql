@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS meeting_transactions (
     time_end TIMESTAMP,
     total_cost NUMERIC,
     meeting_link TEXT,
-    meeting_id TEXT UNIQUE
+    meeting_id TEXT UNIQUE,
+    status VARCHAR(255)
 );
 

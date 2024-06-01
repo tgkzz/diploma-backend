@@ -76,4 +76,5 @@ type MakeAppointmentRequest struct {
 	ExpertEmail string `json:"expertEmail"`
 	TimeStart   string `json:"timeStart"`
 	TimeEnd     string `json:"timeEnd"`
+	RoomId      string `json:"roomId"`
 }

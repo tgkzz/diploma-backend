@@ -73,3 +73,42 @@ func (h *Handler) getAllExperts(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) createMeet(c echo.Context) error {
+	expertEmail := c.Get("email")
+
+	var req model.MakeAppointmentRequest
+	if err := c.Bind(&req); err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+	req.ExpertEmail = expertEmail.(string)
+
+	res, err := h.service.Meeting.CreateMeetByExpert(c.Request().Context(), req)
+	if err != nil {
+		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrTimeInPast) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status":  "success",
+		"message": "Successfully created meet by expert",
+		"roomId":  res,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+func (h *Handler) GetExpertMeets(c echo.Context) error {
+	expertEmail := c.Get("email")
+
+	res, err := h.service.Meeting.GetExpertMeets(expertEmail.(string))
+	if err != nil {
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.JSON(http.StatusOK, res)
+}
