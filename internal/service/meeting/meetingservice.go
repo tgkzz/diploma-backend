@@ -125,14 +125,19 @@ func (m *MeetingService) PlaceAppointment(req model.MakeAppointmentRequest, user
 		return err
 	}
 
+	if meet.Status != AVAILABLE {
+		return model.ErrMeetingAlreadyBooked
+	}
+
 	if meet.TimeStart.Time.Before(time.Now()) {
 		return model.ErrTimeInPast
 	}
 
 	if err := m.meetingRepo.UpdateMeeting(model.Meeting{
+		Id:     meet.Id,
 		UserId: user.Id,
 		Status: BOOKED,
-	}); err != nil {
+	}, meet.Id); err != nil {
 		return err
 	}
 

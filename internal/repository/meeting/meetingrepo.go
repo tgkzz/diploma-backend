@@ -14,7 +14,7 @@ type MeetingRepo struct {
 type IMeetingRepo interface {
 	CreateMeeting(meeting model.Meeting) error
 	GetMeetingByRoomId(roomId string) (model.Meeting, error)
-	UpdateMeeting(meeting model.Meeting) error
+	UpdateMeeting(meeting model.Meeting, meetingId int) error
 	GetMeetingsByUserId(userId int) ([]model.Meeting, error)
 	GetMeetingsByExpertId(expertId int) ([]model.Meeting, error)
 }
@@ -55,7 +55,7 @@ func (m *MeetingRepo) GetMeetingByRoomId(roomId string) (model.Meeting, error) {
 	return res, nil
 }
 
-func (m *MeetingRepo) UpdateMeeting(meeting model.Meeting) error {
+func (m *MeetingRepo) UpdateMeeting(meeting model.Meeting, meetingId int) error {
 	setParts := []string{}
 	args := []interface{}{}
 	argId := 1

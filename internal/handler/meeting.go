@@ -26,7 +26,7 @@ func (h *Handler) makeAppointment(c echo.Context) error {
 
 	response := map[string]interface{}{
 		"status":  "success",
-		"message": "Successfully created new meeting",
+		"message": "Successfully pointed meeting",
 	}
 
 	return c.JSON(http.StatusOK, response)
