@@ -93,6 +93,9 @@ func (h *Handler) Routes() *echo.Echo {
 	expertApi := e.Group("/expert")
 	{
 		expertApi.GET("/getAllExperts", h.getAllExperts)
+		expertApi.GET("/:expert_id", h.GetExpertById)
+
+		expertApi.GET("/meets/:expert_id", h.getExpertAvailableMeets)
 
 		expertApi.POST("/register", h.registerExpert)
 		expertApi.POST("/login", h.loginExpert)

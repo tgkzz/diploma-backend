@@ -17,6 +17,7 @@ type IExpertService interface {
 	CreateExpert(expert model.Expert) error
 	DeleteExpert(email string) error
 	GetExpertByEmail(email string) (model.Expert, error)
+	GetExpertById(id int) (model.Expert, error)
 	GetAllExperts() ([]model.Expert, error)
 	CheckExpertCreds(expert model.Expert) (model.Expert, error)
 	JwtExpertAuthorization(expert model.Expert) (string, error)
@@ -111,4 +112,8 @@ func (e ExpertService) JwtExpertAuthorization(expert model.Expert) (string, erro
 	}
 
 	return t, nil
+}
+
+func (e ExpertService) GetExpertById(id int) (model.Expert, error) {
+	return e.repo.GetExpertById(id)
 }

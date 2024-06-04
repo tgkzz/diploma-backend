@@ -30,6 +30,7 @@ type IMeetingService interface {
 	PlaceAppointment(req model.MakeAppointmentRequest, userEmail string) error
 	GetExpertMeets(email string) ([]model.Meeting, error)
 	GetUserMeets(email string) ([]model.Meeting, error)
+	GetExpertAvailableMeets(expertId int) ([]model.Meeting, error)
 }
 
 func NewMeetingService(repo meeting.IMeetingRepo, authRepo auth.IAuthRepo, expertRepo authexpert.IExpertRepo) *MeetingService {
@@ -170,4 +171,8 @@ func (m *MeetingService) GetUserMeets(email string) ([]model.Meeting, error) {
 	}
 
 	return res, nil
+}
+
+func (m *MeetingService) GetExpertAvailableMeets(expertId int) ([]model.Meeting, error) {
+	return m.meetingRepo.GetExpertAvailableMeets(expertId)
 }

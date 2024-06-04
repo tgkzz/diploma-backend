@@ -17,6 +17,7 @@ type IMeetingRepo interface {
 	UpdateMeeting(meeting model.Meeting, meetingId int) error
 	GetMeetingsByUserId(userId int) ([]model.Meeting, error)
 	GetMeetingsByExpertId(expertId int) ([]model.Meeting, error)
+	GetExpertAvailableMeets(expertId int) ([]model.Meeting, error)
 }
 
 func NewMeetingRepo(pg *sql.DB) *MeetingRepo {
@@ -161,7 +162,31 @@ func (m *MeetingRepo) GetMeetingsByUserId(userId int) ([]model.Meeting, error) {
 		meetings = append(meetings, meeting)
 	}
 
-	// Проверка на ошибки при итерации по результатам
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return meetings, nil
+}
+
+func (m *MeetingRepo) GetExpertAvailableMeets(expertId int) ([]model.Meeting, error) {
+	query := "SELECT id, user_id, expert_id, time_start, time_end, total_cost, meeting_link, meeting_id, status FROM meeting_transactions WHERE expert_id=$1 AND status=`available`"
+
+	rows, err := m.pgDb.Query(query, expertId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var meetings []model.Meeting
+	for rows.Next() {
+		var meeting model.Meeting
+		err := rows.Scan(&meeting.Id, &meeting.UserId, &meeting.ExpertId, &meeting.TimeStart.Time, &meeting.TimeEnd.Time, &meeting.TotalCost, &meeting.MeetingLink, &meeting.RoomId, &meeting.Status)
+		if err != nil {
+			return nil, err
+		}
+		meetings = append(meetings, meeting)
+	}
+
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}

@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"server/internal/model"
+	"strconv"
 )
 
 func (h *Handler) registerExpert(c echo.Context) error {
@@ -111,4 +112,56 @@ func (h *Handler) GetExpertMeets(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, res)
+}
+
+func (h *Handler) GetExpertById(c echo.Context) error {
+	expertId := c.Param("expert_id")
+
+	id, err := strconv.Atoi(expertId)
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	res, err := h.service.ExpertAuth.GetExpertById(id)
+	if err != nil {
+		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrNotFound) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status": "success",
+		"expert": res,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+func (h *Handler) getExpertAvailableMeets(c echo.Context) error {
+	expertId := c.Param("expert_id")
+
+	id, err := strconv.Atoi(expertId)
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	res, err := h.service.Meeting.GetExpertAvailableMeets(id)
+	if err != nil {
+		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrNotFound) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status": "success",
+		"expert": res,
+	}
+
+	return c.JSON(http.StatusOK, response)
 }

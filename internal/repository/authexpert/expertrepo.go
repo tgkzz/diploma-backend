@@ -14,6 +14,7 @@ type IExpertRepo interface {
 	DeleteExpertByEmail(email string) error
 	GetExpertByEmail(email string) (model.Expert, error)
 	GetAllExpert() ([]model.Expert, error)
+	GetExpertById(id int) (model.Expert, error)
 }
 
 func NewExpertRepo(db *sql.DB) *ExpertRepo {
@@ -71,6 +72,16 @@ func (e ExpertRepo) GetExpertByEmail(email string) (model.Expert, error) {
 	var expert model.Expert
 
 	err := e.DB.QueryRow(query, email).Scan(&expert.Id, &expert.FirstName, &expert.LastName, &expert.Email, &expert.Cost, &expert.Password, &expert.Description, &expert.ImageLink)
+
+	return expert, err
+}
+
+func (e ExpertRepo) GetExpertById(id int) (model.Expert, error) {
+	query := `SELECT id, fname, lname, email, cost, password, description, imageLink FROM experts WHERE id = $1`
+
+	var expert model.Expert
+
+	err := e.DB.QueryRow(query, id).Scan(&expert.Id, &expert.FirstName, &expert.LastName, &expert.Email, &expert.Cost, &expert.Password, &expert.Description, &expert.ImageLink)
 
 	return expert, err
 }
