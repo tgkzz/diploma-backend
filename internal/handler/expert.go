@@ -165,3 +165,20 @@ func (h *Handler) getExpertAvailableMeets(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) getExpert(c echo.Context) error {
+	email := c.Get("email")
+
+	res, err := h.service.ExpertAuth.GetExpertByEmail(email.(string))
+	if err != nil {
+		h.errorLogger.Print(err)
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	response := map[string]interface{}{
+		"status": "success",
+		"expert": res,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}

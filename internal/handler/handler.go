@@ -103,6 +103,7 @@ func (h *Handler) Routes() *echo.Echo {
 		expertAction := expertApi.Group("")
 		expertAction.Use(h.expertJwtMiddleware)
 		{
+			expertAction.GET("/get", h.getExpert)
 			expertAction.POST("/create/meet", h.createMeet)
 			expertAction.GET("/get-meets", h.GetExpertMeets)
 		}
