@@ -27,7 +27,14 @@ func NewMailer(cfg config.Mailer) *Mailer {
 
 func (m Mailer) SendMessage(to, msg string) error {
 
-	if err := smtp.SendMail(m.SmtpHost+":"+m.SmtpPort, m.Auth, m.From, []string{to}, []byte(msg)); err != nil {
+	message := "From: " + m.From + "\r\n" +
+		"To: " + to + "\r\n" +
+		"Subject: Код подтверждения\r\n" +
+		"MIME-version: 1.0;\r\n" +
+		"Content-Type: text/plain; charset=\"UTF-8\";\r\n" +
+		"\r\n" + msg
+
+	if err := smtp.SendMail(m.SmtpHost+":"+m.SmtpPort, m.Auth, m.From, []string{to}, []byte(message)); err != nil {
 		return err
 	}
 
