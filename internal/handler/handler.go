@@ -73,7 +73,7 @@ func (h *Handler) Routes() *echo.Echo {
 
 		meeting := user.Group("/meeting")
 		{
-			meeting.POST("/delete-meeting/:room_id", h.DeleteMeetByUser)
+			meeting.DELETE("/delete-meeting/:room_id", h.DeleteMeetByUser)
 			meeting.POST("/make-appointment", h.makeAppointment)
 			meeting.GET("/by-room-id", h.GetMeetingByRoomId)
 		}
