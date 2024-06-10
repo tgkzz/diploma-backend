@@ -73,6 +73,7 @@ func (h *Handler) Routes() *echo.Echo {
 
 		meeting := user.Group("/meeting")
 		{
+			meeting.POST("/delete-meeting/:room_id", h.DeleteMeetByUser)
 			meeting.POST("/make-appointment", h.makeAppointment)
 			meeting.GET("/by-room-id", h.GetMeetingByRoomId)
 		}
@@ -106,6 +107,7 @@ func (h *Handler) Routes() *echo.Echo {
 			expertAction.GET("/get", h.getExpert)
 			expertAction.POST("/create/meet", h.createMeet)
 			expertAction.GET("/get-meets", h.GetExpertMeets)
+			expertAction.DELETE("/delete-meet/:room_id", h.DeleteMeetByExpert)
 		}
 
 		expertApi.GET("/by-room-id", h.GetMeetingByRoomId)

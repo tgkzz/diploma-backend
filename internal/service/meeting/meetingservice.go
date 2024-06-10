@@ -32,6 +32,8 @@ type IMeetingService interface {
 	GetExpertMeets(email string) ([]model.Meeting, error)
 	GetUserMeets(email string) ([]model.Meeting, error)
 	GetExpertAvailableMeets(expertId int) ([]model.Meeting, error)
+	DeleteMeetByExpert(roomId string) error
+	DeleteMeetByUser(roomId string) error
 }
 
 func NewMeetingService(repo meeting.IMeetingRepo, authRepo auth.IAuthRepo, expertRepo authexpert.IExpertRepo) *MeetingService {
@@ -187,4 +189,42 @@ func (m *MeetingService) GetExpertAvailableMeets(expertId int) ([]model.Meeting,
 	sorting.SortByTime(res)
 
 	return res, nil
+}
+
+func (m *MeetingService) DeleteMeetByExpert(roomId string) error {
+	meet, err := m.meetingRepo.GetMeetingByRoomId(roomId)
+	if err != nil {
+		return err
+	}
+
+	if meet.Status != "available" {
+		return model.ErrImpossibleOperation
+	}
+
+	if err := m.meetingRepo.DeleteMeetById(meet.Id); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MeetingService) DeleteMeetByUser(roomId string) error {
+	meet, err := m.meetingRepo.GetMeetingByRoomId(roomId)
+	if err != nil {
+		return err
+	}
+
+	if meet.TimeStart.Time.Truncate(24*time.Hour) != time.Now().Truncate(24*time.Hour) {
+		return model.ErrImpossibleOperation
+	}
+
+	if err := m.meetingRepo.UpdateMeeting(model.Meeting{
+		Id:     meet.Id,
+		UserId: 0,
+		Status: AVAILABLE,
+	}, meet.Id); err != nil {
+		return err
+	}
+
+	return nil
 }

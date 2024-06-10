@@ -17,4 +17,5 @@ var (
 	ErrNoMeeting                   error = errors.New("no room meeting")
 	ErrTimeInPast                  error = errors.New("time cannot be in past")
 	ErrMeetingAlreadyBooked        error = errors.New("meeting already token")
+	ErrImpossibleOperation         error = errors.New("impossible operation")
 )

@@ -182,3 +182,31 @@ func (h *Handler) getExpert(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, response)
 }
+
+func (h *Handler) DeleteMeetByExpert(c echo.Context) error {
+	roomId := c.Param("room_id")
+
+	if err := h.service.Meeting.DeleteMeetByExpert(roomId); err != nil {
+		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrImpossibleOperation) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}
+
+func (h *Handler) DeleteMeetByUser(c echo.Context) error {
+	roomId := c.Param("room_id")
+
+	if err := h.service.Meeting.DeleteMeetByUser(roomId); err != nil {
+		h.errorLogger.Print(err)
+		if errors.Is(err, model.ErrImpossibleOperation) {
+			return ErrorHandler(c, err, http.StatusBadRequest)
+		}
+		return ErrorHandler(c, err, http.StatusInternalServerError)
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}

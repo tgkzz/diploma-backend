@@ -18,6 +18,7 @@ type IMeetingRepo interface {
 	GetMeetingsByUserId(userId int) ([]model.Meeting, error)
 	GetMeetingsByExpertId(expertId int) ([]model.Meeting, error)
 	GetExpertAvailableMeets(expertId int) ([]model.Meeting, error)
+	DeleteMeetById(id int) error
 }
 
 func NewMeetingRepo(pg *sql.DB) *MeetingRepo {
@@ -192,4 +193,22 @@ func (m *MeetingRepo) GetExpertAvailableMeets(expertId int) ([]model.Meeting, er
 	}
 
 	return meetings, nil
+}
+
+func (m *MeetingRepo) DeleteMeetById(id int) error {
+	query := `DELETE FROM meeting_transactions WHERE id = $1;`
+
+	result, err := m.pgDb.Exec(query, id)
+	if err != nil {
+		return fmt.Errorf("error when trying to delete meeting: %w", err)
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error when trying to get rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("no meeting found with id: %d", id)
+	}
+
+	return nil
 }
