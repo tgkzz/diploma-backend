@@ -29,7 +29,7 @@ func (m Mailer) SendMessage(to, msg string) error {
 
 	message := "From: " + m.From + "\r\n" +
 		"To: " + to + "\r\n" +
-		"Subject: Код подтверждения\r\n" +
+		"Subject: NO REPLY (Finkomek fintech app)\r\n" +
 		"MIME-version: 1.0;\r\n" +
 		"Content-Type: text/plain; charset=\"UTF-8\";\r\n" +
 		"\r\n" + msg
