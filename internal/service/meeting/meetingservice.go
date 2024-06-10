@@ -102,10 +102,16 @@ func (m *MeetingService) CreateMeetByExpert(ctx context.Context, req model.MakeA
 		return "", model.ErrTimeInPast
 	}
 
+	hours := timeEnd.Time.Sub(timeStart.Time).Hours()
+
+	if hours <= 0 {
+		return "", fmt.Errorf("invalid meeting duration: %v hours", hours)
+	}
+
 	roomId := uuid.New().String()
 	if err := m.meetingRepo.CreateMeeting(model.Meeting{
 		ExpertId:    expert.Id,
-		TotalCost:   expert.Cost,
+		TotalCost:   expert.Cost * hours,
 		MeetingLink: "",
 		RoomId:      roomId,
 		TimeStart:   timeStart,
