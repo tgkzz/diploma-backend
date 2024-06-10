@@ -25,8 +25,3 @@ func (t *UnixTime) UnmarshalJSON(b []byte) error {
 func (t UnixTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(t.Format(time.RFC3339))
 }
-
-type QuoteMsg struct {
-	Id   string `json:"id"`
-	Body string `json:"body"`
-}

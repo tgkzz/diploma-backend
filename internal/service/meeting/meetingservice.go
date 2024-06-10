@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"server/internal/model"
+	"server/internal/pkg/sorting"
 	"server/internal/repository/auth"
 	"server/internal/repository/authexpert"
 	"server/internal/repository/meeting"
@@ -156,6 +157,8 @@ func (m *MeetingService) GetExpertMeets(email string) ([]model.Meeting, error) {
 		return nil, err
 	}
 
+	sorting.SortByTime(res)
+
 	return res, nil
 }
 
@@ -170,9 +173,18 @@ func (m *MeetingService) GetUserMeets(email string) ([]model.Meeting, error) {
 		return nil, err
 	}
 
+	sorting.SortByTime(res)
+
 	return res, nil
 }
 
 func (m *MeetingService) GetExpertAvailableMeets(expertId int) ([]model.Meeting, error) {
-	return m.meetingRepo.GetExpertAvailableMeets(expertId)
+	res, err := m.meetingRepo.GetExpertAvailableMeets(expertId)
+	if err != nil {
+		return nil, err
+	}
+
+	sorting.SortByTime(res)
+
+	return res, nil
 }
