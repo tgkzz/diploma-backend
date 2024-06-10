@@ -173,7 +173,7 @@ func (m *MeetingRepo) GetMeetingsByUserId(userId int) ([]model.Meeting, error) {
 func (m *MeetingRepo) GetExpertAvailableMeets(expertId int) ([]model.Meeting, error) {
 	query := `SELECT id, user_id, expert_id, time_start, time_end, total_cost, meeting_link, meeting_id, status 
               FROM meeting_transactions 
-              WHERE expert_id=$1 AND status='available' AND time_end > NOW()`
+              WHERE expert_id=$1 AND status='available' AND time_end > NOW() + INTERVAL '5 hours'`
 
 	rows, err := m.pgDb.Query(query, expertId)
 	if err != nil {
