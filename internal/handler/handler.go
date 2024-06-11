@@ -44,6 +44,7 @@ func (h *Handler) Routes() *echo.Echo {
 	api := e.Group("/api")
 	{
 		api.POST("/send-msg", h.sendMsg)
+		api.GET("/get-user/:user_id", h.GetUserById)
 	}
 
 	authApi := e.Group("/auth")
