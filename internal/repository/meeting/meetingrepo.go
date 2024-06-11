@@ -119,7 +119,7 @@ func (m *MeetingRepo) UpdateMeeting(meeting model.Meeting, meetingId int) error 
 }
 
 func (m *MeetingRepo) GetMeetingsByExpertId(expertId int) ([]model.Meeting, error) {
-	query := `SELECT id, user_id, expert_id, time_start, time_end, total_cost, meeting_link, meeting_id, status FROM meeting_transactions WHERE expert_id=$1`
+	query := `SELECT id, user_id, expert_id, time_start, time_end, total_cost, meeting_link, meeting_id, status FROM meeting_transactions WHERE expert_id=$1 AND time_start > NOW() + INTERVAL '5 hours'`
 
 	rows, err := m.pgDb.Query(query, expertId)
 	if err != nil {
