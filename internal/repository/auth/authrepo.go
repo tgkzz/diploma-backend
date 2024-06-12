@@ -53,7 +53,7 @@ func (a AuthRepo) GetUserByEmail(email string) (model.User, error) {
 }
 
 func (a AuthRepo) GetUserById(id int) (model.User, error) {
-	query := "SELECT id, email, password, fname, lname from users WHERE email = $1"
+	query := "SELECT id, email, password, fname, lname from users WHERE id = $1"
 
 	var user model.User
 
