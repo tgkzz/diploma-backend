@@ -5,7 +5,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"server/internal/model"
+	"time"
 )
+
+const pingPeriod = 30 * time.Second
 
 type Room struct {
 	RoomID    string
@@ -77,17 +80,30 @@ func (h *Handler) handleConnections(c echo.Context) error {
 
 func (h *Handler) HandleMessages(roomID string, errChan chan error) {
 	room := Rooms[roomID]
-	for msg := range room.Broadcast {
-		for client := range room.Clients {
-			if err := client.WriteJSON(msg); err != nil {
-				client.Close()
-				delete(room.Clients, client)
-				if len(room.Clients) == 0 {
-					close(room.Broadcast)
-					delete(Rooms, roomID)
+	pingTicker := time.NewTicker(pingPeriod)
+	defer pingTicker.Stop()
+
+	for {
+		select {
+		case msg := <-room.Broadcast:
+			for client := range room.Clients {
+				if err := client.WriteJSON(msg); err != nil {
+					client.Close()
+					delete(room.Clients, client)
+					if len(room.Clients) == 0 {
+						close(room.Broadcast)
+						delete(Rooms, roomID)
+					}
+					errChan <- err
+					return
 				}
-				errChan <- err
-				return
+			}
+		case <-pingTicker.C:
+			for client := range room.Clients {
+				if err := client.WriteMessage(websocket.PingMessage, nil); err != nil {
+					client.Close()
+					delete(room.Clients, client)
+				}
 			}
 		}
 	}
