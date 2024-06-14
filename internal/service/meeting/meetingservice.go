@@ -219,8 +219,12 @@ func (m *MeetingService) DeleteMeetByUser(roomId string) error {
 	if err != nil {
 		return err
 	}
+	//
+	//if meet.TimeStart.Time.Truncate(24*time.Hour) != time.Now().Truncate(24*time.Hour) {
+	//	return model.ErrImpossibleOperation
+	//}
 
-	if meet.TimeStart.Time.Truncate(24*time.Hour) != time.Now().Truncate(24*time.Hour) {
+	if time.Now().Add(24 * time.Hour).After(meet.TimeStart.Time) {
 		return model.ErrImpossibleOperation
 	}
 
