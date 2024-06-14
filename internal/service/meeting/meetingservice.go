@@ -230,7 +230,7 @@ func (m *MeetingService) DeleteMeetByUser(roomId string) error {
 
 	if err := m.meetingRepo.UpdateMeeting(model.Meeting{
 		Id:     meet.Id,
-		UserId: 0,
+		UserId: 100000,
 		Status: AVAILABLE,
 	}, meet.Id); err != nil {
 		return err
