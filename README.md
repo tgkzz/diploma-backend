@@ -10,7 +10,7 @@ Since the project was a thesis and the deadline was tight, the project was done 
 
 ![schema](https://iili.io/d91WlTu.md.png)
 
-Services in the reference implementation should communicate via message brokers (gRPC, Kafka, RabbitMQ) or via HTTP, but in my understanding it would be necessary to deploy several servers, which is not favourable in terms of diploma project development. 
+Services in the reference implementation should communicate via gRPC/HTTP or message brokers (gRPC, Kafka, RabbitMQ), but in my understanding it would be necessary to deploy several servers, which is not favourable in terms of diploma project development. 
 ## Future developement
 
 At the moment, I have no plans to further develop this project, as the team is more than likely not going to pursue it. However, PRs are always welcome
